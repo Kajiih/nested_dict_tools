@@ -9,7 +9,7 @@ description = "Utilities for Python nested dictionaries."
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.12"
-keywords = ["python"] # TODO: Add these
+keywords = ["python", "nested dictionary", "utils", "tools"]
 
 classifiers = [ # https://pypi.org/classifiers/
     "Development Status :: 2 - Pre-Alpha",
@@ -17,19 +17,9 @@ classifiers = [ # https://pypi.org/classifiers/
     "Natural Language :: English",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: Implementation :: CPython",
 ]
-
-dependencies = [
-    # "frosch",
-    # "loguru",
-    # "rich",
-    # "typed-settings[attrs,cattrs]",
-    # "python-dotenv",
-    # "cyclopts",
-    # "toolz",
-    # "tqdm",
-    ]
 
 
 [tool.uv]
@@ -42,7 +32,6 @@ dev = [
     "ipdb",
     "ipykernel",
     "jupyter",
-    "matplotlib",
     "pytest",
     "pytest-cov",
 ]
@@ -51,7 +40,7 @@ type-check = ["basedpyright"]
 
 [tool.hatch.version]
 path = "src/nested_dict_tools/__about__.py"
-[tool.hatch.metadata.hooks.custom] # Enables custom hooks for dyamic metadata
+[tool.hatch.metadata.hooks.custom] # Enables custom hooks for dynamic metadata
 [tool.hatch.build.targets.wheel]
 packages = ["src/nested_dict_tools"]
 
@@ -83,6 +72,7 @@ reportUnknownMemberType = "none"
 reportUnknownVariableType = "none"
 reportUnknownArgumentType = "none"
 reportAny = "none"
+reportExplicitAny = "none"
 
 # === Lint + Formatting === #
 [tool.ruff] # https://docs.astral.sh/ruff/settings
@@ -145,7 +135,6 @@ exclude = []
         "RET504", # Unnecessary assignment to `...` before `return` statement
         "G004",   # Logging statement uses f-string
 
-        # TODO: Comment out for produciton release
         "ERA001", # Found commented-out code
         "S101",   # Use of `assert` detected
         "G004",   # Logging statement uses f-string
@@ -153,11 +142,12 @@ exclude = []
 
         [tool.ruff.lint.per-file-ignores]
         "tests/*" = [
-            "SLF001", # Private member accessed: `self._foo`
-            "D100",   # Missing docstring in public module
-            "D101",   # Missing docstring in public class
-            "D102",   # Missing docstring in public method
-            "D103",   # Missing docstring in public function
+            "SLF001",  # Private member accessed: `self._foo`
+            "D100",    # Missing docstring in public module
+            "D101",    # Missing docstring in public class
+            "D102",    # Missing docstring in public method
+            "D103",    # Missing docstring in public function
+            "PLR6031", # Method `` could be a function, class method, or static method
             "ANN",
         ]
         "*.ipynb" = [
@@ -166,7 +156,7 @@ exclude = []
         ]
         "dev/_*" = [
             "D103", # Missing docstring in public function
-            ]
+        ]
 
         [tool.ruff.lint.pydocstyle]
         convention = "google"

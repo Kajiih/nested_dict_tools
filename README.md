@@ -1,52 +1,69 @@
-# Nested Dict Tools
+[![Build][github-ci-image]][github-ci-link]
+[![Coverage Status][codecov-image]][codecov-link]
+[![PyPI Version][pypi-image]][pypi-link]
+[![PyPI - Python Version][python-image]][pypi-link]
+![License][license-image-mit]
+<!-- [![PyPI Version](https://img.shields.io/pypi/v/nested-dict-tools.svg)](https://pypi.org/project/nested-dict-tools/) -->
+<!-- [![Build Status](https://github.com/kajiih/nested-dict-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/kajiih/nested-dict-tools/actions) -->
+<!-- [![License](https://img.shields.io/pypi/l/nested-dict-tools.svg)](https://github.com/kajiih/nested-dict-tools/blob/main/LICENSE) -->
 
-Utilities for Python nested dictionaries.
+# 🪆 Nested Dict Tools
 
-<p align="center">
-  <img src="media/package_illustration.png" alt="Illustration">
-</p>
+**Nested Dict Tools** is a Python package that provides utilities for working with nested dictionaries. It includes:
 
-<div align="center">
-    <a href="https://pypi.python.org/pypi/nested_dict_tools">
-        <img src="https://img.shields.io/pypi/v/nested_dict_tools.svg" alt="PyPI version">
-    </a>
-    <a href="https://nested-dict-tools.readthedocs.io/en/latest/?version=latest">
-        <img src="https://readthedocs.org/projects/nested-dict-tools/badge/?version=latest" alt="Documentation Status">
-    </a>
-</div>
+- Recursive types for describing nested mappings and dictionaries.
+- Fully typed functions to:
+  - Flatten and unflatten nested dictionaries.
+  - Get and set deeply nested values.
 
-## Contents <!-- omit from toc -->
+```python
+from nested_dict_tools import flatten_dict, unflatten_dict, get_deep, set_deep
 
-- [💻 Installation](#-installation)
-- [🏃 Getting Started](#-getting-started)
-- [🧾 License](#-license)
+nested = {'a': {'b': {'c': 42}}}
 
-## 💻 Installation
+# Get a deeply nested value
+value = get_deep(nested, ['a', 'b'])
+print(value)  # Output: {'c': 42}
 
-1. **Create virtual environment**
+# Set a deeply nested value
+set_deep(nested, ['a', 'z'], 'new_value')
+print(nested)  # Output: {'a': {'b': {'c': 42}, 'z': 'new_value'}}
 
-    TO UPDATE
+# Flatten the nested dictionary
+flat = flatten_dict(nested, sep='.')
+print(flat)  # Output: {'a.b.c': 42, 'a.z': 'new_value'}
 
-2. **Install the package and its dependencies**
+# Unflatten the flattened dictionary
+unflattened = unflatten_dict(flat, sep='.')
+print(unflattened == nested)  # Output: True
 
-    TO UPDATE
+# Recursive types:
+type NestedDict[K, V] = dict[K, NestedDictNode[K, V]]
+type NestedDictNode[K, V] = V | NestedDict[K, V]
+# Similar types for Mapping and MutableMapping
+```
 
-<!-- ### Requirements -->
+## ⬇️ Installation
 
-## 🏃 Getting Started
+You can install **Nested Dict Tools** via pip:
 
-[Documentation](https://nested-dict-tools.readthedocs.io)
-
-<!-- ## 📔 Citation -->
+```bash
+pip install nested-dict-tools
+```
 
 ## 🧾 License
 
-| Component            | License                                                                  |
-| -------------------- | -------------------------------------------------------------------------|
-| Codebase (this repo) | [MIT license](LICENSE)|
+[MIT](LICENSE)
 
-<!-- ## 🤝 Contributing -->
+<!-- Links -->
+[github-ci-image]: https://github.com/kajiih/nested-dict-tools/workflows/build/badge.svg?branch=main&event=push
+[github-ci-link]: https://github.com/kajiih/nested-dict-tools/actions?query=workflow%3Abuild+branch%3Amain
 
-## Credits <!-- omit from toc -->
+[codecov-image]: https://img.shields.io/codecov/c/github/kajiih/nested-dict-tools/main.svg?logo=codecov&logoColor=aaaaaa&labelColor=333333
+[codecov-link]: https://codecov.io/github/kajiih/nested-dict-tools
 
-This package was created with [Cookiecutter](https://github.com/audreyr/cookiecutter) and the [Kajiih/cookiecutter-pypackage-kj](https://github.com/Kajiih/cookiecutter-pypackage-kj) project template based on  [audreyr/cookiecutter-pypackage](https://github.com/audreyr/cookiecutter-pypackage).
+[pypi-image]: https://img.shields.io/pypi/v/nested-dict-tools.svg?logo=pypi&logoColor=aaaaaa&labelColor=333333
+[pypi-link]: https://pypi.python.org/pypi/nested-dict-tools
+
+[python-image]: https://img.shields.io/pypi/pyversions/nested-dict-tools?logo=python&logoColor=aaaaaa&labelColor=333333
+[license-image-mit]: https://img.shields.io/badge/license-MIT-blue.svg?labelColor=333333
