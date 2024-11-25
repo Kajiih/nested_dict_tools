@@ -3,9 +3,6 @@
 [![PyPI Version][pypi-image]][pypi-link]
 [![PyPI - Python Version][python-image]][pypi-link]
 ![License][license-image-mit]
-<!-- [![PyPI Version](https://img.shields.io/pypi/v/nested-dict-tools.svg)](https://pypi.org/project/nested-dict-tools/) -->
-<!-- [![Build Status](https://github.com/kajiih/nested-dict-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/kajiih/nested-dict-tools/actions) -->
-<!-- [![License](https://img.shields.io/pypi/l/nested-dict-tools.svg)](https://github.com/kajiih/nested-dict-tools/blob/main/LICENSE) -->
 
 # 🪆 Nested Dict Tools
 
@@ -56,11 +53,11 @@ pip install nested-dict-tools
 [MIT](LICENSE)
 
 <!-- Links -->
-[github-ci-image]: https://github.com/kajiih/nested-dict-tools/workflows/build/badge.svg?branch=main&event=push
-[github-ci-link]: https://github.com/kajiih/nested-dict-tools/actions?query=workflow%3Abuild+branch%3Amain
+[github-ci-image]: https://github.com/kajiih/nested_dict_tools/workflows/build/badge.svg?branch=main
+[github-ci-link]: https://github.com/kajiih/nested_dict_tools/actions?query=workflow%3Abuild+branch%3Amain
 
 [codecov-image]: https://img.shields.io/codecov/c/github/kajiih/nested-dict-tools/main.svg?logo=codecov&logoColor=aaaaaa&labelColor=333333
-[codecov-link]: https://codecov.io/github/kajiih/nested-dict-tools
+[codecov-link]: https://codecov.io/github/kajiih/nested_dict_tools
 
 [pypi-image]: https://img.shields.io/pypi/v/nested-dict-tools.svg?logo=pypi&logoColor=aaaaaa&labelColor=333333
 [pypi-link]: https://pypi.python.org/pypi/nested-dict-tools

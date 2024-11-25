@@ -1,4 +1,4 @@
-# GitHub CI build pipeline
+# Build Workflow
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
 name: 📦 Nested Dict Tools CI build
@@ -17,49 +17,60 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu-latest, windows-latest, macos-latest"] # [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest] # [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            path: ~/.cache/pip
+          - os: macos-latest
+            path: ~/Library/Caches/pip
+          - os: windows-latest
+            path: ~\AppData\Local\pip\Cache
         python-version: ["3.12", "3.13"] # ["3.10", "3.11", "3.12"]
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Checkout 🛎️
+      - name: 🛎️ Checkout
         uses: actions/checkout@v4
-      - name: Install uv with caching
+
+      - name: 🐍 Install uv with caching
         uses: astral-sh/setup-uv@v3
         with:
           enable-cache: true
-      - name: Set up Python ${{ matrix.python-version }} 🐍
+      - name: 🐍 Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-          # cache: "pip" # caching pip dependencies
-          # cache-dependency-path: |
-          #   **/requirements/base.txt
-          #   **/requirements/dev.txt
-      - name: Install the project 📥
+      - name: 💾 Setup pip cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ matrix.path }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('uv.lock') }}
+          restore-keys: ${{ runner.os }}-pip-
+
+      - name: 📥 Install the project
         run: uv sync --all-extras --dev
 
-      - name: Lint with ruff @chartboost 🧹
+      - name: 🧹 Lint with ruff @chartboost
         uses: chartboost/ruff-action@v1
         continue-on-error: true
 
-      - name: Install pytest-action dependencies 📥
+      - name: 📥 Install pytest-action dependencies
         run: |
           uv pip install pytest-md, pytest-emoji
-      - name: Run pytest @pavelzw 🧪
+      - name: 🧪 Run pytest @pavelzw
         uses: pavelzw/pytest-action@v2
         with:
           custom-arguments: "tests -rA --doctest-modules --cov=."
         continue-on-error: true
 
-      - name: Upload coverage to Codecov 📊
+      - name: 📊 Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
           # file: .coverage
           verbose: true
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      - name: Pylance type checking @jakebailey ✅
+      - name: ✅ Pylance type checking @jakebailey
         uses: jakebailey/pyright-action@v2
         with:
           pylance-version: latest-release
@@ -67,14 +78,19 @@ jobs:
           # verbose: true
         continue-on-error: true
 
-      # - name: Install public interface package 📥
+      # - name: 📥 Install public interface package
       #   run: |
       #     python -m pip install .
 
-      - name: Verify public API types with Pylance @jakebailey ✅
+      - name: ✅ Verify public API types with Pylance @jakebailey
         uses: jakebailey/pyright-action@v2
         with:
           pylance-version: latest-release
           verify-types: nested_dict_tools
           # verbose: true
         continue-on-error: true
+
+      - name: 🏗️ Build
+        run: |
+          pipx install hatch
+          hatch build
