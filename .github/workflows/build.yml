@@ -55,8 +55,7 @@ jobs:
       - name: 🏞️ Activate virtual environment
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
-              # .venv\Scripts\activate
-              source .venv/bin/activate
+              .venv\\Scripts\\activate
               echo PATH=$PATH >> $env:GITHUB_ENV
           else
               source .venv/bin/activate
