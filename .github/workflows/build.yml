@@ -88,7 +88,6 @@ jobs:
         env:
           REPORT_OUTPUT: md_report.md
         run: |
-          uv pip install pytest hatchling
           echo "REPORT_FILE=${REPORT_OUTPUT}" >> "$GITHUB_ENV"
           pytest --doctest-modules --md-report --md-report-flavor gfm --md-report-output "$REPORT_OUTPUT" --cov=. # -rA
         continue-on-error: true
@@ -110,7 +109,9 @@ jobs:
         continue-on-error: true
 
       - name: ✅ Type checking with BasedPyright
-        run: basedpyright # --stats
+        run: |
+          uv pip install pytest hatchling  # For some reason basedpyright doesn't find those packages
+          basedpyright # --stats
         continue-on-error: true
 
       - name: ✅ Verify public API types with BasedPyright

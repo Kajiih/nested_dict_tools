@@ -4,9 +4,8 @@ Bugs:
 
 Codebase Improvement:
     ☐ Fix CI
-        ☐ Doctest
-        ☐ Typed API
-        ☐ On all 3 Os
+        ☐ Investigate why BasedPyright (and Pyright) doesn't find `Pytest` and `hatchling` packages
+        ☐ Investigate the cache issue with `uv` on `windows`
     ☐ Fix readme badges (build)
 
 Tests:
