@@ -74,8 +74,11 @@ jobs:
 
       - name: 🧹 Lint with ruff @astral-sh
         uses: astral-sh/ruff-action@v1
-        # with:
-        #   args: "format --diff"
+        continue-on-error: true
+      - name: 🪄 Format with ruff @astral-sh
+        uses: astral-sh/ruff-action@v1
+        with:
+          args: "format --diff"
         continue-on-error: true
 
       - name: 📥 Install pytest-action dependencies
@@ -83,7 +86,12 @@ jobs:
       - name: 🧪 Run pytest @pavelzw
         uses: pavelzw/pytest-action@v2
         with:
-          custom-arguments: "tests -rA --cov=." # --doctest-modules
+          custom-arguments: "tests -rA --cov=."
+        continue-on-error: true
+      - name: 🧪 Run doctest @pavelzw
+        uses: pavelzw/pytest-action@v2
+        with:
+          custom-arguments: "--doctest-modules"
         continue-on-error: true
 
       - name: 📊 Upload coverage to Codecov
@@ -93,10 +101,6 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         continue-on-error: true
-
-      - name: Install tar on Windows
-        if: runner.os == 'Windows'
-        run: choco install gnuwin32-coreutils.install
 
       - name: ✅ Pylance type checking @jakebailey
         uses: jakebailey/pyright-action@v2
