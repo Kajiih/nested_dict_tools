@@ -60,15 +60,12 @@ jobs:
           restore-keys: ${{ runner.os }}-pip-
 
       - name: 📥 Install the project
-        run: uv sync --all-extras --dev
+        run: uv sync --all-extras --dev --cache-dir "~\\AppData\\Local\\uv\\cache"
 
       - name: 🏞️ Activate virtual environment
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
-              echo "UV_CACHE_DIR=~\\AppData\\Local\\uv\\cache" >> $GITHUB_ENV
-              # echo UV_CACHE_DIR="\\AppData\\Local\\uv\\cache" >> $GITHUB_ENV
-              echo $GITHUB_ENV
-              echo $UV_CACHE_DIR
+              "~\\AppData\\Local\\uv\\cache"
               source .venv\\Scripts\\activate
               echo PATH=$PATH >> $GITHUB_ENV
               uv pip install pipx  # Problems with ruff action without this
