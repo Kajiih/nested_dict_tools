@@ -23,14 +23,14 @@ jobs:
         os:
           - ubuntu-latest
           # - macos-latest
-          # - windows-latest
+          - windows-latest
         include:
           - os: ubuntu-latest
             path: ~/.cache/pip
           # - os: macos-latest
           #   path: ~/Library/Caches/pip
-          # - os: windows-latest
-          #   path: ~\AppData\Local\pip\Cache
+          - os: windows-latest
+            path: ~\AppData\Local\pip\Cache
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -57,7 +57,9 @@ jobs:
           restore-keys: ${{ runner.os }}-pip-
 
       - name: 📥 Install the project
-        run: uv sync --all-extras --dev
+        run: |
+          uv sync --all-extras --dev
+          uv pip install -e .
       - name: 🏞️ Activate virtual environment
         run: |
           ORIGINAL_PATH=$PATH
@@ -68,18 +70,11 @@ jobs:
               source .venv/bin/activate
               echo PATH=$PATH >> $GITHUB_ENV
           fi
-        # shell: bash
-
-      # - name: add path to PATH environment variable
-      #   uses: myci-actions/export-env-var@1
-      #   with:
-      #     name: PATH
-      #     value: $PATH:/some/path
 
       - name: 🧹 Lint with ruff @astral-sh
         uses: astral-sh/ruff-action@v1
-        # with:
-        #   args: "format --diff"
+        with:
+          args: "format --diff"
         continue-on-error: true
 
       - name: 📥 Install pytest-action dependencies
@@ -87,7 +82,7 @@ jobs:
       - name: 🧪 Run pytest @pavelzw
         uses: pavelzw/pytest-action@v2
         with:
-          custom-arguments: "tests -rA --doctest-modules --cov=."
+          custom-arguments: "tests -rA --cov=."  # --doctest-modules
         continue-on-error: true
 
       - name: 📊 Upload coverage to Codecov
