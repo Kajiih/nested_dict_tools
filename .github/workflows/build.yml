@@ -55,7 +55,8 @@ jobs:
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
               source .venv\\Scripts\\activate
-              echo PATH=$PATH >> $GITHUB_ENV
+              # echo PATH=$PATH >> $GITHUB_ENV
+              echo PATH=$PATH:${{ runner.temp }}\\.venv\\Scripts >> $GITHUB_ENV
           else
               source .venv/bin/activate
               echo PATH=$PATH >> $GITHUB_ENV
