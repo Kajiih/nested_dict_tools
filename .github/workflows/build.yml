@@ -93,8 +93,22 @@ jobs:
       #   continue-on-error: true
 
       - name: 🧪 Run Pytest with doctest
-        run: pytest --doctest-modules --md-report --cov=. # -rA
+        env:
+          REPORT_OUTPUT: md_report.md
+        run: |
+          echo "REPORT_FILE=${REPORT_OUTPUT}" >> "$GITHUB_ENV"
+          pytest --doctest-modules --md-report --md-report-flavor gfm --md-report-output "$REPORT_OUTPUT" --cov=. # -rA
         continue-on-error: true
+
+      - name: 🧪 Add test output reports to the job summary
+        run: |
+          if [ -f "$REPORT_FILE" ]; then
+            echo "<details><summary>Failed Test Report</summary>" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            cat "$REPORT_FILE" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "</details>" >> $GITHUB_STEP_SUMMARY
+          fi
 
       - name: 📊 Upload coverage to Codecov
         uses: codecov/codecov-action@v5
