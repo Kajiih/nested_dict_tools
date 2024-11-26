@@ -9,7 +9,6 @@ Codebase Improvement:
         ☐ Investigate why `Ruff` action doesn't find `pipx` on `windows` without reinstalling with pip
         ☐ Investigate how to fix space in `pipx` on `windows`
         ☐ Investigate why `Basedpyright` gives different results on `windows`
-    ☐ Fix readme badges (build)
 
 Tests:
 
