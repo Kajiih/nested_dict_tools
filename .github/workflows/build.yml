@@ -117,6 +117,13 @@ jobs:
           # verbose: true
         continue-on-error: true
 
+      - name: ✅ Type checking with BasedPyright
+        run: basedpyright --stats
+        continue-on-error: true
+      - name: ✅ Verify public API types with BasedPyright
+        run: basedpyright --verifytypes nested_dict_tools
+        continue-on-error: true
+
       - name: 🏗️ Build
         run: |
           pipx install hatch
