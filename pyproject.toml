@@ -27,13 +27,14 @@ default-groups = ["dev", "lint", "type-check"]
 
 [dependency-groups]
 dev = [
-    "hatchling",
-    "icecream",
-    "ipdb",
-    "ipykernel",
-    "jupyter",
-    "pytest",
-    "pytest-cov",
+    "hatchling=1.26.3",
+    "icecream=2.1.3",
+    "ipdb>=0.13.13",
+    "ipykernel>=6.29.5",
+    "jupyter>=1.1.1",
+    "pytest>=8.3.3",
+    "pytest-cov>=6",
+    "pytest-md-report>=0.6.2",
 ]
 lint = ["ruff"]
 type-check = ["basedpyright"]

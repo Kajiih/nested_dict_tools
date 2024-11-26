@@ -91,8 +91,9 @@ jobs:
       #   with:
       #     custom-arguments: "--doctest-modules"
       #   continue-on-error: true
-      - name: 🧪 Run doctest with doctest
-        run: pytest --doctest-modules -rA --cov=.
+
+      - name: 🧪 Run Pytest with doctest
+        run: pytest --doctest-modules --md-report --cov=. # -rA
         continue-on-error: true
 
       - name: 📊 Upload coverage to Codecov
@@ -122,7 +123,9 @@ jobs:
         run: basedpyright --stats
         continue-on-error: true
       - name: ✅ Verify public API types with BasedPyright
-        run: basedpyright --verifytypes
+        run: |
+          pip install -e .
+          basedpyright --verifytypes nest_dict_tools
         continue-on-error: true
 
       - name: 🏗️ Build
