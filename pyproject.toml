@@ -12,7 +12,7 @@ requires-python = ">=3.12"
 keywords = ["python", "nested dictionary", "utils", "tools"]
 
 classifiers = [ # https://pypi.org/classifiers/
-    "Development Status :: 2 - Pre-Alpha",
+    "Development Status :: 4 - Beta",
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Programming Language :: Python",
