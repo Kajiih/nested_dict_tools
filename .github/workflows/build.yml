@@ -66,14 +66,12 @@ jobs:
           if [ "$RUNNER_OS" == "Windows" ]; then
               source .venv\\Scripts\\activate
               echo PATH=$PATH >> $GITHUB_ENV
+              pip install pipx  # Problems with ruff action otherwise
           else
               source .venv/bin/activate
               echo PATH=$PATH >> $GITHUB_ENV
           fi
 
-      - name: Install tar on Windows
-        if: runner.os == 'Windows'
-        run: pip install pipx
       - name: 🧹 Lint with ruff @astral-sh
         uses: astral-sh/ruff-action@v1
         with:
@@ -98,7 +96,7 @@ jobs:
 
       - name: Install tar on Windows
         if: runner.os == 'Windows'
-        run: choco install tar -y
+        run: choco install tartool -y
 
       - name: ✅ Pylance type checking @jakebailey
         uses: jakebailey/pyright-action@v2
