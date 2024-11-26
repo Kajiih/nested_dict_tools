@@ -60,9 +60,7 @@ jobs:
           restore-keys: ${{ runner.os }}-pip-
 
       - name: 📥 Install the project
-        run: |
-          uv pip install -U invoke wheel
-          uv sync --all-extras --dev
+        run: uv sync --all-extras --dev
 
       - name: 🏞️ Activate virtual environment
         run: |
@@ -116,8 +114,9 @@ jobs:
 
       - name: ✅ Verify public API types with BasedPyright
         run: |
+          pip uninstall .
           pip install .
-          basedpyright --verifytypes nest_dict_tools
+          basedpyright --verifytypes nested_dict_tools
         continue-on-error: true
 
       - name: 🏗️ Build
