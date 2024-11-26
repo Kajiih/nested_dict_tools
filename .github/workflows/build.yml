@@ -56,7 +56,7 @@ jobs:
 
       - name: 📥 Install pytest-action dependencies
         run: |
-          uv pip install pytest-md, pytest-emoji
+          uv pip install pytest-md pytest-emoji
       - name: 🧪 Run pytest @pavelzw
         uses: pavelzw/pytest-action@v2
         with:
