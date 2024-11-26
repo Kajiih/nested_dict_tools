@@ -196,7 +196,6 @@ docstring-code-format = true
         "def __repr__",
         "def __str__",
         "if TYPE_CHECKING:",
-        # "if __name__ == '__main__':",
 
         # Don't complain about missing debug-only code:
         # "if self\\.debug",
