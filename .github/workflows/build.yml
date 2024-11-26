@@ -86,8 +86,10 @@ jobs:
       #   fi
       # shell: bash
 
-      - name: 🧹 Lint with ruff @chartboost
-        uses: chartboost/ruff-action@v1
+      - name: 🧹 Lint with ruff @astral-sh
+        uses: astral-sh/ruff-action@v1
+        with:
+          args: "format --check"
         continue-on-error: true
 
       - name: 📥 Install pytest-action dependencies
@@ -99,11 +101,12 @@ jobs:
         continue-on-error: true
 
       - name: 📊 Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           verbose: true
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        continue-on-error: true
       - name: ✅ Pylance type checking @jakebailey
         uses: jakebailey/pyright-action@v2
         with:
