@@ -87,10 +87,13 @@ jobs:
         with:
           custom-arguments: "tests -rA --cov=."
         continue-on-error: true
-      - name: 🧪 Run doctest @pavelzw
-        uses: pavelzw/pytest-action@v2
-        with:
-          custom-arguments: "--doctest-modules"
+      # - name: 🧪 Run doctest @pavelzw
+      #   uses: pavelzw/pytest-action@v2
+      #   with:
+      #     custom-arguments: "--doctest-modules"
+      #   continue-on-error: true
+      - name: 🧪 Run doctest manually
+        run: pytest --doctest-modules
         continue-on-error: true
 
       - name: 📊 Upload coverage to Codecov
@@ -101,20 +104,20 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         continue-on-error: true
 
-      - name: ✅ Pylance type checking @jakebailey
-        uses: jakebailey/pyright-action@v2
-        with:
-          pylance-version: latest-release
-          stats: true
-          # verbose: true
-        continue-on-error: true
-      - name: ✅ Verify public API types with Pylance @jakebailey
-        uses: jakebailey/pyright-action@v2
-        with:
-          pylance-version: latest-release
-          verify-types: nested_dict_tools
-          # verbose: true
-        continue-on-error: true
+      # - name: ✅ Pylance type checking @jakebailey
+      #   uses: jakebailey/pyright-action@v2
+      #   with:
+      #     pylance-version: latest-release
+      #     stats: true
+      #     # verbose: true
+      #   continue-on-error: true
+      # - name: ✅ Verify public API types with Pylance @jakebailey
+      #   uses: jakebailey/pyright-action@v2
+      #   with:
+      #     pylance-version: latest-release
+      #     verify-types: nested_dict_tools
+      #     # verbose: true
+      #   continue-on-error: true
 
       - name: ✅ Type checking with BasedPyright
         run: basedpyright --stats
