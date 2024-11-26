@@ -74,8 +74,8 @@ jobs:
 
       - name: 🧹 Lint with ruff @astral-sh
         uses: astral-sh/ruff-action@v1
-        with:
-          args: "format --diff"
+        # with:
+        #   args: "format --diff"
         continue-on-error: true
 
       - name: 📥 Install pytest-action dependencies
@@ -96,7 +96,7 @@ jobs:
 
       - name: Install tar on Windows
         if: runner.os == 'Windows'
-        run: choco install tartool -y
+        run: choco install gnuwin32-coreutils.install
 
       - name: ✅ Pylance type checking @jakebailey
         uses: jakebailey/pyright-action@v2
