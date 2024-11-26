@@ -63,6 +63,7 @@ jobs:
             source .venv/bin/activate
             echo PATH=$PATH >> $env:GITHUB_ENV
           fi
+        shell: bash
 
       - name: 🧹 Lint with ruff @chartboost
         uses: chartboost/ruff-action@v1
