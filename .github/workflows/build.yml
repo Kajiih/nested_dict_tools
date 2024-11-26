@@ -20,11 +20,13 @@ jobs:
         include:
           - os: ubuntu-latest
             path: ~/.cache/pip
-          # - os: macos-latest
-          #   path: ~/Library/Caches/pip
-          # - os: windows-latest
-          #   path: ~\AppData\Local\pip\Cache
-        python-version: ["3.12", "3.13"]
+          - os: macos-latest
+            path: ~/Library/Caches/pip
+          - os: windows-latest
+            path: ~\AppData\Local\pip\Cache
+        python-version:
+          - "3.12"
+          # - "3.13"
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -50,9 +52,17 @@ jobs:
       - name: 📥 Install the project
         run: uv sync --all-extras --dev
       - name: 🏞️ Activate virtual environment
+        # run: |
+        #   source .venv/bin/activate
+        #   echo PATH=$PATH >> $GITHUB_ENV
         run: |
-          source .venv/bin/activate
-          echo PATH=$PATH >> $GITHUB_ENV
+          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            .venv\Scripts\activate
+            echo PATH=$PATH >> $GITHUB_ENV
+          else
+            source .venv/bin/activate
+            echo PATH=$PATH >> $env:GITHUB_ENV
+          fi
 
       - name: 🧹 Lint with ruff @chartboost
         uses: chartboost/ruff-action@v1
