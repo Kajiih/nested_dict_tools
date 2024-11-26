@@ -1,6 +1,7 @@
 """Tests for core module."""
 
 import math
+import time
 
 import pytest
 
@@ -75,8 +76,6 @@ class TestFlattenDict:
 
     # Test performance with large nested dictionaries
     def test_flatten_large_nested_dict_performance(self):
-        import time
-
         NB_RECURSION = 500
         # Create a large nested dictionary
         large_nested_dict = {}
