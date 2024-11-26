@@ -49,23 +49,22 @@ jobs:
 
       - name: 📥 Install the project
         run: uv sync --all-extras --dev
+      - name: 🏞️ Activate virtual environment
+        run: |
+          source .venv/bin/activate
+          echo PATH=$PATH >> $GITHUB_ENV
 
       - name: 🧹 Lint with ruff @chartboost
         uses: chartboost/ruff-action@v1
         continue-on-error: true
 
       - name: 📥 Install pytest-action dependencies
-        run: |
-          pip install pytest pytest-cov pytest-md pytest-emoji
+        run: uv pip install pytest-md pytest-emoji # pytest pytest-cov
       - name: 🧪 Run pytest @pavelzw
         uses: pavelzw/pytest-action@v2
         with:
           custom-arguments: "tests -rA --doctest-modules --cov=."
         continue-on-error: true
-
-      # - name: 🧪 Run Pytest with command
-      #   run: pytest tests -rA --doctest-modules --cov=.
-      #   continue-on-error: true
 
       - name: 📊 Upload coverage to Codecov
         uses: codecov/codecov-action@v4

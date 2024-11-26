@@ -27,7 +27,6 @@ default-groups = ["dev", "lint", "type-check"]
 
 [dependency-groups]
 dev = [
-    "hatch",
     "hatchling",
     "icecream",
     "ipdb",
