@@ -59,7 +59,6 @@ jobs:
       - name: 📥 Install the project
         run: |
           uv sync --all-extras --dev
-          # uv pip install -e .
       - name: 🏞️ Activate virtual environment
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
@@ -80,20 +79,20 @@ jobs:
           args: "format --diff"
         continue-on-error: true
 
-      - name: 📥 Install pytest-action dependencies
-        run: uv pip install pytest-md pytest-emoji
-      - name: 🧪 Run pytest @pavelzw
-        uses: pavelzw/pytest-action@v2
-        with:
-          custom-arguments: "tests -rA --cov=."
-        continue-on-error: true
+      # - name: 📥 Install pytest-action dependencies
+      #   run: uv pip install pytest-md pytest-emoji
+      # - name: 🧪 Run pytest @pavelzw
+      #   uses: pavelzw/pytest-action@v2
+      #   with:
+      #     custom-arguments: "tests -rA --cov=."
+      #   continue-on-error: true
       # - name: 🧪 Run doctest @pavelzw
       #   uses: pavelzw/pytest-action@v2
       #   with:
       #     custom-arguments: "--doctest-modules"
       #   continue-on-error: true
-      - name: 🧪 Run doctest manually
-        run: pytest --doctest-modules
+      - name: 🧪 Run doctest with doctest
+        run: pytest --doctest-modules -rA --cov=.
         continue-on-error: true
 
       - name: 📊 Upload coverage to Codecov
@@ -123,7 +122,7 @@ jobs:
         run: basedpyright --stats
         continue-on-error: true
       - name: ✅ Verify public API types with BasedPyright
-        run: basedpyright --verifytypes nested_dict_tools ./src/nested_dict_tools
+        run: basedpyright --verifytypes
         continue-on-error: true
 
       - name: 🏗️ Build
