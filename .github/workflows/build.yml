@@ -27,8 +27,8 @@ jobs:
         include:
           - os: ubuntu-latest
             path: ~/.cache/pip
-          # - os: macos-latest
-          #   path: ~/Library/Caches/pip
+          - os: macos-latest
+            path: ~/Library/Caches/pip
           - os: windows-latest
             path: ~\AppData\Local\pip\Cache
     runs-on: ${{ matrix.os }}
@@ -37,7 +37,6 @@ jobs:
         shell: bash
     env:
       UV_SYSTEM_PYTHON: 1
-      UV_CACHE_DIR: ~/.cache/uv
     steps:
       - name: 🛎️ Checkout
         uses: actions/checkout@v4
@@ -66,6 +65,7 @@ jobs:
       - name: 🏞️ Activate virtual environment
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
+              echo UV_CACHE_DIR="~\\AppData\\Local\\uv\\cache" >> $GITHUB_ENV
               source .venv\\Scripts\\activate
               echo PATH=$PATH >> $GITHUB_ENV
               uv pip install pipx  # Problems with ruff action without this
@@ -88,6 +88,7 @@ jobs:
         env:
           REPORT_OUTPUT: md_report.md
         run: |
+          uv pip install pytest hatchling
           echo "REPORT_FILE=${REPORT_OUTPUT}" >> "$GITHUB_ENV"
           pytest --doctest-modules --md-report --md-report-flavor gfm --md-report-output "$REPORT_OUTPUT" --cov=. # -rA
         continue-on-error: true
