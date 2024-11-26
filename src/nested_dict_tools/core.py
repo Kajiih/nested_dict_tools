@@ -36,9 +36,7 @@ class KeySeparatorCollisionError(Exception):
     """Separator collides with a key of a nested dict."""
 
     def __init__(self, key: str, sep: str) -> None:
-        super().__init__(
-            f"Separator `{sep}` is a substring of key `{key}`. Change separator."
-        )
+        super().__init__(f"Separator `{sep}` is a substring of key `{key}`. Change separator.")
 
 
 def flatten_dict[K: str, V](d: NestedMapping[K, V], sep: str = ".") -> dict[str, V]:
@@ -60,7 +58,9 @@ def flatten_dict[K: str, V](d: NestedMapping[K, V], sep: str = ".") -> dict[str,
     {'a.b': 1, 'a.c': 2, 'd.e.f': 3}
 
     >>> flatten_dict({"a.": 1})
-    KeySeparatorCollisionError: Separator `.` is a substring of key `a.`. Change separator.
+    Traceback (most recent call last):
+    ...
+    nested_dict_tools.core.KeySeparatorCollisionError: Separator `.` is a substring of key `a.`. Change separator.
     """
 
     def flatten_dict_gen(
@@ -71,9 +71,7 @@ def flatten_dict[K: str, V](d: NestedMapping[K, V], sep: str = ".") -> dict[str,
                 raise KeySeparatorCollisionError(k, sep)
             concat_key = parent_key + sep + k if parent_key is not None else k
             if isinstance(v, Mapping):
-                yield from flatten_dict_gen(
-                    cast(NestedMapping[K, V], v), concat_key, sep
-                )
+                yield from flatten_dict_gen(cast(NestedMapping[K, V], v), concat_key, sep)
             else:
                 yield concat_key, v
 
@@ -157,6 +155,8 @@ def get_deep[K, V, D](
     'missing'
 
     >>> get_deep(data, ["a", "x"], no_default=True)
+    Traceback (most recent call last):
+    ...
     KeyError: 'x'
 
     >>> get_deep(data, ["a", "b"])
@@ -176,9 +176,7 @@ def get_deep[K, V, D](
 
 # ? Is it possible to replace Any by V in the type annotation without having problems because of
 # ? invariance of mutable mappings?
-def set_deep[K, V](
-    d: NestedMutableMapping[K, Any], keys: Sequence[K], value: Any
-) -> None:
+def set_deep[K, V](d: NestedMutableMapping[K, Any], keys: Sequence[K], value: Any) -> None:
     """
     Set a value in a nested dictionary, creating any missing sub-dictionaries along the way.
 
