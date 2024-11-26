@@ -27,8 +27,8 @@ jobs:
         include:
           - os: ubuntu-latest
             path: ~/.cache/pip
-          - os: macos-latest
-            path: ~/Library/Caches/pip
+          # - os: macos-latest
+          #   path: ~/Library/Caches/pip
           - os: windows-latest
             path: ~\AppData\Local\pip\Cache
     runs-on: ${{ matrix.os }}
@@ -65,8 +65,10 @@ jobs:
       - name: 🏞️ Activate virtual environment
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
-              echo UV_CACHE_DIR="\\AppData\\Local\\uv\\cache" >> $GITHUB_ENV
+              echo "UV_CACHE_DIR=~\\AppData\\Local\\uv\\cache" >> $GITHUB_ENV
+              # echo UV_CACHE_DIR="\\AppData\\Local\\uv\\cache" >> $GITHUB_ENV
               echo $GITHUB_ENV
+              echo $UV_CACHE_DIR
               source .venv\\Scripts\\activate
               echo PATH=$PATH >> $GITHUB_ENV
               uv pip install pipx  # Problems with ruff action without this
