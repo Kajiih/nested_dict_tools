@@ -45,10 +45,12 @@ jobs:
         with:
           enable-cache: true
           version: "0.5.4"
+
       - name: 🐍 Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+
       - name: 💾 Setup pip cache
         uses: actions/cache@v4
         with:
@@ -59,12 +61,14 @@ jobs:
       - name: 📥 Install the project
         run: |
           uv sync --all-extras --dev
+
       - name: 🏞️ Activate virtual environment
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
               source .venv\\Scripts\\activate
               echo PATH=$PATH >> $GITHUB_ENV
               pip install pipx  # Problems with ruff action otherwise
+              pipx ensurepath
           else
               source .venv/bin/activate
               echo PATH=$PATH >> $GITHUB_ENV
@@ -73,24 +77,12 @@ jobs:
       - name: 🧹 Lint with ruff @astral-sh
         uses: astral-sh/ruff-action@v1
         continue-on-error: true
+
       - name: 🪄 Format with ruff @astral-sh
         uses: astral-sh/ruff-action@v1
         with:
           args: "format --diff"
         continue-on-error: true
-
-      # - name: 📥 Install pytest-action dependencies
-      #   run: uv pip install pytest-md pytest-emoji
-      # - name: 🧪 Run pytest @pavelzw
-      #   uses: pavelzw/pytest-action@v2
-      #   with:
-      #     custom-arguments: "tests -rA --cov=."
-      #   continue-on-error: true
-      # - name: 🧪 Run doctest @pavelzw
-      #   uses: pavelzw/pytest-action@v2
-      #   with:
-      #     custom-arguments: "--doctest-modules"
-      #   continue-on-error: true
 
       - name: 🧪 Run Pytest with doctest
         env:
@@ -103,7 +95,7 @@ jobs:
       - name: 🧪 Add test output reports to the job summary
         run: |
           if [ -f "$REPORT_FILE" ]; then
-            echo "<details><summary>Failed Test Report</summary>" >> $GITHUB_STEP_SUMMARY
+            echo "<details><summary>Test Report</summary>" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             cat "$REPORT_FILE" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
@@ -118,27 +110,12 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         continue-on-error: true
 
-      # - name: ✅ Pylance type checking @jakebailey
-      #   uses: jakebailey/pyright-action@v2
-      #   with:
-      #     pylance-version: latest-release
-      #     stats: true
-      #     # verbose: true
-      #   continue-on-error: true
-      # - name: ✅ Verify public API types with Pylance @jakebailey
-      #   uses: jakebailey/pyright-action@v2
-      #   with:
-      #     pylance-version: latest-release
-      #     verify-types: nested_dict_tools
-      #     # verbose: true
-      #   continue-on-error: true
-
       - name: ✅ Type checking with BasedPyright
-        run: basedpyright --stats
+        run: basedpyright # --stats
         continue-on-error: true
+
       - name: ✅ Verify public API types with BasedPyright
         run: |
-          pip install -e .
           basedpyright --verifytypes nest_dict_tools
         continue-on-error: true
 
