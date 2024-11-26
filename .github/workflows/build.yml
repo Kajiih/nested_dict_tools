@@ -53,8 +53,9 @@ jobs:
         run: uv sync --all-extras --dev
       - name: 🏞️ Activate virtual environment
         run: |
-          source .venv/bin/activate
-          echo PATH=$PATH >> $GITHUB_ENV
+          # source .venv/bin/activate
+           . .venv/bin/activate
+           echo PATH=$PATH >> $GITHUB_ENV
         # run: |
         #   if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
         #     .venv\Scripts\activate
