@@ -60,6 +60,7 @@ jobs:
         run: |
           uv sync --all-extras --dev
           uv pip install -e .
+          uv pip install pipx
       - name: 🏞️ Activate virtual environment
         run: |
           ORIGINAL_PATH=$PATH
@@ -82,7 +83,7 @@ jobs:
       - name: 🧪 Run pytest @pavelzw
         uses: pavelzw/pytest-action@v2
         with:
-          custom-arguments: "tests -rA --cov=."  # --doctest-modules
+          custom-arguments: "tests -rA --cov=." # --doctest-modules
         continue-on-error: true
 
       - name: 📊 Upload coverage to Codecov

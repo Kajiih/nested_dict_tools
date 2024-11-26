@@ -28,6 +28,7 @@ class AboutMetadataHookOld(MetadataHookInterface):
         about = importlib.util.module_from_spec(spec)
         sys.modules["__about__"] = about
         spec.loader.exec_module(about)
+        1 == 2
 
         # Map __about__ attributes to metadata fields
         metadata["authors"] = [{"name": about.__author__, "email": about.__author_email__}]
