@@ -67,8 +67,8 @@ jobs:
           if [ "$RUNNER_OS" == "Windows" ]; then
               source .venv\\Scripts\\activate
               echo PATH=$PATH >> $GITHUB_ENV
-              # pip install pipx  # Problems with ruff action otherwise
-              # pipx ensurepath
+              pip install pipx  # Problems with ruff action otherwise
+              pipx ensurepath
           else
               source .venv/bin/activate
               echo PATH=$PATH >> $GITHUB_ENV
@@ -114,7 +114,7 @@ jobs:
 
       - name: ✅ Verify public API types with BasedPyright
         run: |
-          pip uninstall nested_dict_tools
+          # pip uninstall nested_dict_tools
           pip install .
           basedpyright --verifytypes nested_dict_tools
         continue-on-error: true
