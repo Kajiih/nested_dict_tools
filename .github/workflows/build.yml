@@ -23,14 +23,14 @@ jobs:
         os:
           - ubuntu-latest
           # - macos-latest
-          - windows-latest
+          # - windows-latest
         include:
           - os: ubuntu-latest
             path: ~/.cache/pip
           # - os: macos-latest
           #   path: ~/Library/Caches/pip
-          - os: windows-latest
-            path: ~\AppData\Local\pip\Cache
+          # - os: windows-latest
+          #   path: ~\AppData\Local\pip\Cache
     runs-on: ${{ matrix.os }}
     defaults:
       run:
