@@ -17,16 +17,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          # - os: ubuntu-latest
-          #   path: ~/.cache/pip
-          # - os: macos-latest
-          #   path: ~/Library/Caches/pip
-          - os: windows-latest
-            path: ~\AppData\Local\pip\Cache
         python-version:
           - "3.12"
           # - "3.13"
+        include:
+          # - os: ubuntu-latest
+          #   path: ~/.cache/pip
+          - os: macos-latest
+            path: ~/Library/Caches/pip
+          - os: windows-latest
+            path: ~\AppData\Local\pip\Cache
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -62,7 +62,7 @@ jobs:
               # echo PATH=$ORIGINAL_PATH:$PATH >> $GITHUB_ENV
               # echo PATH=$PATH:${{ runner.temp }}\\.venv\\Scripts >> $GITHUB_ENV
               # echo PATH=$PATH;.venv\\Scripts >> $GITHUB_ENV
-              echo PATH=$PATH >> $GITHUB_ENV
+              # echo PATH=$PATH >> $GITHUB_ENV
           else
               source .venv/bin/activate
               echo PATH=$PATH >> $GITHUB_ENV
@@ -96,6 +96,7 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         continue-on-error: true
+
       - name: ✅ Pylance type checking @jakebailey
         uses: jakebailey/pyright-action@v2
         with:
@@ -103,7 +104,6 @@ jobs:
           stats: true
           # verbose: true
         continue-on-error: true
-
       - name: ✅ Verify public API types with Pylance @jakebailey
         uses: jakebailey/pyright-action@v2
         with:
