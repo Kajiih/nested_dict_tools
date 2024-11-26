@@ -22,15 +22,15 @@ jobs:
           # - "3.13"
         os:
           - ubuntu-latest
-          # - macos-latest
+          - macos-latest
           - windows-latest
         include:
           - os: ubuntu-latest
-            path: ~/.cache/pip
-          # - os: macos-latest
-          #   path: ~/Library/Caches/pip
+            path: ~/.cache/uv
+          - os: macos-latest
+            path: ~/Library/Caches/uv
           - os: windows-latest
-            path: ~\AppData\Local\pip\Cache
+            path: ~\AppData\Local\uv\Cache
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -56,16 +56,15 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ matrix.path }}
-          key: ${{ runner.os }}-pip-${{ hashFiles('uv.lock') }}
-          restore-keys: ${{ runner.os }}-pip-
+          key: ${{ runner.os }}-uv-${{ hashFiles('uv.lock') }}
+          restore-keys: ${{ runner.os }}-uv-
 
       - name: 📥 Install the project
-        run: uv sync --all-extras --dev --cache-dir "~\\AppData\\Local\\uv\\cache"
+        run: uv sync --all-extras --dev
 
       - name: 🏞️ Activate virtual environment
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
-              "~\\AppData\\Local\\uv\\cache"
               source .venv\\Scripts\\activate
               echo PATH=$PATH >> $GITHUB_ENV
               uv pip install pipx  # Problems with ruff action without this
