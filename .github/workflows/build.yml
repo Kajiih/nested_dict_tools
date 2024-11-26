@@ -18,11 +18,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-latest
-            path: ~/.cache/pip
-            # venv_activate_command: source .venv/bin/activate
-          - os: macos-latest
-            path: ~/Library/Caches/pip
+          # - os: ubuntu-latest
+          #   path: ~/.cache/pip
+          # - os: macos-latest
+          #   path: ~/Library/Caches/pip
           - os: windows-latest
             path: ~\AppData\Local\pip\Cache
         python-version:
@@ -56,7 +55,10 @@ jobs:
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
               source .venv\\Scripts\\activate
-              echo PATH=$PATH >> $env:GITHUB_ENV
+              # echo PATH=$PATH >> $env:GITHUB_ENV
+              echo PATH=$PATH >> $GITHUB_ENV
+              echo $GITHUB_ENV
+              echo $env:GITHUB_ENV
           else
               source .venv/bin/activate
               echo PATH=$PATH >> $GITHUB_ENV
