@@ -125,6 +125,7 @@ exclude = []
 
     ]
     ignore = [
+        "ISC001", # Checks for implicitly concatenated strings on a single line. -- Should not be used with formatter
         "D105",   # Missing docstring in magic method
         "D107",   # Missing docstring in `__init__`
         "D212",   # Multi-line docstring summary should start at the first line
