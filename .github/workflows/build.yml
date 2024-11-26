@@ -35,7 +35,8 @@ jobs:
     defaults:
       run:
         shell: bash
-
+    env:
+      UV_SYSTEM_PYTHON: 1
     steps:
       - name: 🛎️ Checkout
         uses: actions/checkout@v4
@@ -60,6 +61,7 @@ jobs:
 
       - name: 📥 Install the project
         run: |
+          uv pip install -U invoke wheel
           uv sync --all-extras --dev
 
       - name: 🏞️ Activate virtual environment
