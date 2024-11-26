@@ -55,12 +55,15 @@ jobs:
 
       - name: 📥 Install pytest-action dependencies
         run: |
-          uv pip install pytest pytest-cov pytest-md pytest-emoji
+          uv pip install pytest-md pytest-emoji
       - name: 🧪 Run pytest @pavelzw
         uses: pavelzw/pytest-action@v2
         with:
           custom-arguments: "tests -rA --doctest-modules --cov=."
         continue-on-error: true
+
+      - name: 🧪 Run Pytest with command
+        run: pytest tests -rA --doctest-modules --cov=.
 
       - name: 📊 Upload coverage to Codecov
         uses: codecov/codecov-action@v4
