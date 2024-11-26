@@ -56,18 +56,19 @@ jobs:
           if [ "$RUNNER_OS" == "Windows" ]; then
               source .venv\\Scripts\\activate
               # echo PATH=$PATH >> $GITHUB_ENV
-              echo PATH=$PATH;\\a\\_temp\\.venv\\Scripts >> $GITHUB_ENV
+              # echo PATH=$PATH:${{ runner.temp }}\\.venv\\Scripts >> $GITHUB_ENV
+              echo PATH=$PATH;.venv\\Scripts >> $GITHUB_ENV
           else
               source .venv/bin/activate
               echo PATH=$PATH >> $GITHUB_ENV
           fi
         shell: bash
 
-      - name: Add path to PATH environment variable
-        uses: myci-actions/export-env-var@1
-        with:
-          name: PATH
-          value: $PATH:/some/path
+      # - name: add path to PATH environment variable
+      #   uses: myci-actions/export-env-var@1
+      #   with:
+      #     name: PATH
+      #     value: $PATH:/some/path
 
       - name: 🧹 Lint with ruff @astral-sh
         uses: astral-sh/ruff-action@v1
