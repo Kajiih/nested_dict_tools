@@ -69,8 +69,8 @@ jobs:
           if [ "$RUNNER_OS" == "Windows" ]; then
               source .venv\\Scripts\\activate
               echo PATH=$PATH >> $GITHUB_ENV
-              pip install pipx  # Problems with ruff action otherwise
-              pipx ensurepath
+              # pip install pipx  # Problems with ruff action otherwise
+              # pipx ensurepath
           else
               source .venv/bin/activate
               echo PATH=$PATH >> $GITHUB_ENV
@@ -106,8 +106,6 @@ jobs:
 
       - name: 📊 Upload coverage to Codecov
         uses: codecov/codecov-action@v5
-        with:
-          verbose: true
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         continue-on-error: true
@@ -118,6 +116,7 @@ jobs:
 
       - name: ✅ Verify public API types with BasedPyright
         run: |
+          pip install .
           basedpyright --verifytypes nest_dict_tools
         continue-on-error: true
 
