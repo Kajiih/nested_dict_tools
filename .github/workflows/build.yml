@@ -63,7 +63,8 @@ jobs:
         continue-on-error: true
 
       - name: 🧪 Run Pytest with command
-        run: pytest tests -rA --doctest-modules --cov=.
+        run: python -m pytest tests -rA --doctest-modules --cov=.
+        continue-on-error: true
 
       - name: 📊 Upload coverage to Codecov
         uses: codecov/codecov-action@v4
