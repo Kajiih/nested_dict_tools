@@ -17,14 +17,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest] # [ubuntu-latest, windows-latest, macos-latest]
         include:
           - os: ubuntu-latest
             path: ~/.cache/pip
-          - os: macos-latest
-            path: ~/Library/Caches/pip
-          - os: windows-latest
-            path: ~\AppData\Local\pip\Cache
+          # - os: macos-latest
+          #   path: ~/Library/Caches/pip
+          # - os: windows-latest
+          #   path: ~\AppData\Local\pip\Cache
         python-version: ["3.12", "3.13"] # ["3.10", "3.11", "3.12"]
     runs-on: ${{ matrix.os }}
 
