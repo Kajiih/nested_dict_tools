@@ -75,7 +75,7 @@ jobs:
       - name: 🧹 Lint with ruff @astral-sh
         uses: astral-sh/ruff-action@v1
         with:
-          args: "format --check"
+          args: "format --diff"
         continue-on-error: true
 
       - name: 📥 Install pytest-action dependencies
