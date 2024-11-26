@@ -1,12 +1,15 @@
 """Tests for core module."""
 
+import math
+
 import pytest
+
 from nested_dict_tools import (
     KeySeparatorCollisionError,
     flatten_dict,
+    get_deep,
     set_deep,
     unflatten_dict,
-    get_deep,
 )
 
 
@@ -93,16 +96,12 @@ class TestFlattenDict:
             ".".join([f"key{i}" for i in range(NB_RECURSION)]) + ".final_key"
         ]
         assert (
-            flattened_dict[
-                ".".join([f"key{i}" for i in range(NB_RECURSION)]) + ".final_key"
-            ]
+            flattened_dict[".".join([f"key{i}" for i in range(NB_RECURSION)]) + ".final_key"]
             == "value"
         )
 
         # Assert that the operation completes within a reasonable time frame
-        assert (
-            end_time - start_time < 1
-        )  # The operation should complete in less than 1 second
+        assert end_time - start_time < 1  # The operation should complete in less than 1 second
 
     # Test with dictionaries having None as values
     def test_flatten_dict_with_none_values(self):
@@ -225,16 +224,12 @@ class TestGetDeep:
 
     # Return default value when key is missing and no_default is False
     def test_return_default_when_key_missing(self):
-        from src.nested_dict_tools.core import get_deep
-
         data = {"a": {"b": {"c": 42}}}
         result = get_deep(data, ["a", "b", "x"], default="missing")
         assert result == "missing"
 
     # Return nested dictionary when keys lead to a sub-dictionary
     def test_return_nested_dict_for_sub_dictionary_keys(self):
-        from src.nested_dict_tools.core import get_deep
-
         data = {"a": {"b": {"c": 42}}}
         result = get_deep(data, ["a", "b"])
         expected = {"c": 42}
@@ -242,16 +237,12 @@ class TestGetDeep:
 
     # Handle empty keys sequence gracefully
     def test_get_deep_with_empty_keys(self):
-        from src.nested_dict_tools.core import get_deep
-
         data = {"a": {"b": {"c": 42}}}
         result = get_deep(data, [])
         assert result == data
 
     # Handle non-dictionary types within nested structure
     def test_get_deep_with_non_dict_values(self):
-        from src.nested_dict_tools.core import get_deep
-
         # Test with a nested structure containing non-dictionary values
         data = {"a": {"b": 42, "c": [1, 2, 3]}, "d": "string_value"}
 
@@ -273,13 +264,11 @@ class TestGetDeep:
 
     # Verify behavior with mixed data types in nested dictionary
     def test_get_deep_with_mixed_data_types(self):
-        from src.nested_dict_tools.core import get_deep
-
         # Test data with mixed types
         data = {
             "a": {"b": 42, "c": [1, 2, 3]},
             "d": {"e": {"f": "text", "g": None}},
-            "h": 3.14,
+            "h": math.pi,
             "i": True,
         }
 
@@ -296,7 +285,7 @@ class TestGetDeep:
         assert get_deep(data, ["d", "e", "g"]) is None
 
         # Test retrieving a float
-        assert get_deep(data, ["h"]) == 3.14
+        assert get_deep(data, ["h"]) == math.pi
 
         # Test retrieving a boolean
         assert get_deep(data, ["i"]) is True
@@ -310,8 +299,6 @@ class TestGetDeep:
 
     # Ensure compatibility with different iterable types for keys
     def test_get_deep_with_various_iterable_keys(self):
-        from src.nested_dict_tools.core import get_deep
-
         data = {"a": {"b": {"c": 42}, "d": 100}, "e": 200}
 
         # Test with list of keys
