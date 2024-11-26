@@ -19,16 +19,16 @@ jobs:
       matrix:
         python-version:
           - "3.12"
-          # - "3.13"
+          - "3.13"
         os:
           - ubuntu-latest
-          # - macos-latest
+          - macos-latest
           - windows-latest
         include:
           - os: ubuntu-latest
             path: ~/.cache/pip
-          # - os: macos-latest
-          #   path: ~/Library/Caches/pip
+          - os: macos-latest
+            path: ~/Library/Caches/pip
           - os: windows-latest
             path: ~\AppData\Local\pip\Cache
     runs-on: ${{ matrix.os }}
@@ -68,7 +68,6 @@ jobs:
               source .venv\\Scripts\\activate
               echo PATH=$PATH >> $GITHUB_ENV
               uv pip install pipx  # Problems with ruff action without this
-              pipx ensurepath
           else
               source .venv/bin/activate
               echo PATH=$PATH >> $GITHUB_ENV
