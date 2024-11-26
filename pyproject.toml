@@ -182,7 +182,7 @@ docstring-code-format = true
     source_pkgs = ["nested_dict_tools", "tests"]
     branch = true
     parallel = true
-    omit = ["src/nested_dict_tools/__about__.py"]
+    omit = ["src/nested_dict_tools/__about__.py", "hatch_build.py"]
 
     [tool.coverage.paths]
     PackageName = [
