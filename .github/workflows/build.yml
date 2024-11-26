@@ -52,18 +52,18 @@ jobs:
       - name: 📥 Install the project
         run: uv sync --all-extras --dev
       - name: 🏞️ Activate virtual environment
-        # run: |
-        #   source .venv/bin/activate
-        #   echo PATH=$PATH >> $GITHUB_ENV
         run: |
-          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
-            .venv\Scripts\activate
-            echo PATH=$PATH >> $GITHUB_ENV
-          else
-            source .venv/bin/activate
-            echo PATH=$PATH >> $env:GITHUB_ENV
-          fi
-        shell: bash
+          source .venv/bin/activate
+          echo PATH=$PATH >> $GITHUB_ENV
+        # run: |
+        #   if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+        #     .venv\Scripts\activate
+        #     echo PATH=$PATH >> $GITHUB_ENV
+        #   else
+        #     source .venv/bin/activate
+        #     echo PATH=$PATH >> $env:GITHUB_ENV
+        #   fi
+        # shell: bash
 
       - name: 🧹 Lint with ruff @chartboost
         uses: chartboost/ruff-action@v1
