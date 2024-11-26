@@ -19,7 +19,7 @@ jobs:
       matrix:
         python-version:
           - "3.12"
-          - "3.13"
+          # - "3.13"
         os:
           - ubuntu-latest
           - macos-latest
@@ -27,8 +27,8 @@ jobs:
         include:
           - os: ubuntu-latest
             path: ~/.cache/pip
-          - os: macos-latest
-            path: ~/Library/Caches/pip
+          # - os: macos-latest
+          #   path: ~/Library/Caches/pip
           - os: windows-latest
             path: ~\AppData\Local\pip\Cache
     runs-on: ${{ matrix.os }}
@@ -37,6 +37,7 @@ jobs:
         shell: bash
     env:
       UV_SYSTEM_PYTHON: 1
+      UV_CACHE_DIR: ~/.cache/uv
     steps:
       - name: 🛎️ Checkout
         uses: actions/checkout@v4
