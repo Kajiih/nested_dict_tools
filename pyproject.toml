@@ -142,12 +142,12 @@ exclude = []
 
         [tool.ruff.lint.per-file-ignores]
         "tests/*" = [
-            "SLF001", # Private member accessed: `self._foo`
-            "D100",   # Missing docstring in public module
-            "D101",   # Missing docstring in public class
-            "D102",   # Missing docstring in public method
-            "D103",   # Missing docstring in public function
-            "PL6031", # Method `` could be a function, class method, or static method
+            "SLF001",  # Private member accessed: `self._foo`
+            "D100",    # Missing docstring in public module
+            "D101",    # Missing docstring in public class
+            "D102",    # Missing docstring in public method
+            "D103",    # Missing docstring in public function
+            "PLR6301", # Method `` could be a function, class method, or static method
             "ANN",
         ]
         "*.ipynb" = [
