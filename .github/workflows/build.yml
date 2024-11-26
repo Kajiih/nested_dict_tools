@@ -35,16 +35,17 @@ jobs:
         uses: astral-sh/setup-uv@v3
         with:
           enable-cache: true
+          version: "0.5.4"
       - name: 🐍 Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      # - name: 💾 Setup pip cache
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: ${{ matrix.path }}
-      #     key: ${{ runner.os }}-pip-${{ hashFiles('uv.lock') }}
-      #     restore-keys: ${{ runner.os }}-pip-
+      - name: 💾 Setup pip cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ matrix.path }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('uv.lock') }}
+          restore-keys: ${{ runner.os }}-pip-
 
       - name: 📥 Install the project
         run: uv sync --all-extras --dev
@@ -53,14 +54,15 @@ jobs:
         uses: chartboost/ruff-action@v1
         continue-on-error: true
 
-      # - name: 📥 Install pytest-action dependencies
-      #   run: |
-      #     uv pip install pytest-md pytest-emoji
-      # - name: 🧪 Run pytest @pavelzw
-      #   uses: pavelzw/pytest-action@v2
-      #   with:
-      #     custom-arguments: "tests -rA --doctest-modules --cov=."
-      #   continue-on-error: true
+      - name: 📥 Install pytest-action dependencies
+        run: |
+          pipx install pytest pytest-cov
+          uv pip install pytest-md pytest-emoji
+      - name: 🧪 Run pytest @pavelzw
+        uses: pavelzw/pytest-action@v2
+        with:
+          custom-arguments: "tests -rA --doctest-modules --cov=."
+        continue-on-error: true
 
       - name: 🧪 Run Pytest with command
         run: pytest tests -rA --doctest-modules --cov=.
@@ -95,5 +97,5 @@ jobs:
 
       - name: 🏗️ Build
         run: |
-          # pipx install hatch
+          pipx install hatch
           hatch build
