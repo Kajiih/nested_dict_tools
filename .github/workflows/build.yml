@@ -59,10 +59,9 @@ jobs:
       - name: 📥 Install the project
         run: |
           uv sync --all-extras --dev
-          uv pip install -e .
+          # uv pip install -e .
       - name: 🏞️ Activate virtual environment
         run: |
-          ORIGINAL_PATH=$PATH
           if [ "$RUNNER_OS" == "Windows" ]; then
               source .venv\\Scripts\\activate
               echo PATH=$PATH >> $GITHUB_ENV
@@ -121,7 +120,7 @@ jobs:
         run: basedpyright --stats
         continue-on-error: true
       - name: ✅ Verify public API types with BasedPyright
-        run: basedpyright --verifytypes nested_dict_tools
+        run: basedpyright --verifytypes nested_dict_tools ./src/nested_dict_tools
         continue-on-error: true
 
       - name: 🏗️ Build
