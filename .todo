@@ -3,7 +3,10 @@ Features:
 Bugs:
 
 Codebase Improvement:
-    ☐ Fix CI (doctest, typed API, remove hatch build from codecov)
+    ☐ Fix CI
+        ☐ Doctest
+        ☐ Typed API
+        ☐ On all 3 Os
 
 Tests:
 
