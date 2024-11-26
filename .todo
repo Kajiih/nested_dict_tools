@@ -5,7 +5,7 @@ Bugs:
 Codebase Improvement:
     ☐ Fix CI
         ☐ Investigate why `Basedpyright` (and `Pyright`) doesn't find `Pytest` and `hatchling` packages without reinstalling
-        ☐ Investigate the cache issue with `uv` on `windows`
+        ☐ Investigate the cache issue with `uv` on `windows` -- maybe also with regular `pip` with the `actions/cache@v4`
         ☐ Investigate why `Ruff` action doesn't find `pipx` on `windows` without reinstalling with pip
         ☐ Investigate how to fix space in `pipx` on `windows`
         ☐ Investigate why `Basedpyright` gives different results on `windows`
