@@ -67,7 +67,7 @@ jobs:
               source .venv/bin/activate
               echo PATH=$PATH >> $GITHUB_ENV
           fi
-        shell: bash
+        # shell: bash
 
       # - name: add path to PATH environment variable
       #   uses: myci-actions/export-env-var@1
