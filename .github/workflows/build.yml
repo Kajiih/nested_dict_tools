@@ -60,7 +60,6 @@ jobs:
         run: |
           uv sync --all-extras --dev
           uv pip install -e .
-          uv pip install pipx
       - name: 🏞️ Activate virtual environment
         run: |
           ORIGINAL_PATH=$PATH
@@ -72,6 +71,9 @@ jobs:
               echo PATH=$PATH >> $GITHUB_ENV
           fi
 
+      - name: Install tar on Windows
+        if: runner.os == 'Windows'
+        run: pip install pipx
       - name: 🧹 Lint with ruff @astral-sh
         uses: astral-sh/ruff-action@v1
         with:
@@ -93,6 +95,10 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         continue-on-error: true
+
+      - name: Install tar on Windows
+        if: runner.os == 'Windows'
+        run: choco install tar -y
 
       - name: ✅ Pylance type checking @jakebailey
         uses: jakebailey/pyright-action@v2
