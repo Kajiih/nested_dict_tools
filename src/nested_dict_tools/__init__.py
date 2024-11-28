@@ -10,6 +10,7 @@ from .core import (
     NestedMutableMappingNode,
     flatten_dict,
     get_deep,
+    map_leaves,
     set_deep,
     unflatten_dict,
 )
@@ -24,6 +25,7 @@ __all__ = [
     "NestedMutableMappingNode",
     "flatten_dict",
     "get_deep",
+    "map_leaves",
     "set_deep",
     "unflatten_dict",
 ]

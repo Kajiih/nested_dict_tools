@@ -19,7 +19,7 @@ flatten adapted from https://gist.github.com/crscardellino/82507c13ba2b832b860ba
 This code is licensed under the terms of the MIT license.
 """
 
-from collections.abc import Iterable, Iterator, Mapping, MutableMapping, Sequence
+from collections.abc import Callable, Iterable, Iterator, Mapping, MutableMapping, Sequence
 from typing import Any, Literal, cast, overload
 
 type NestedMapping[K, V] = Mapping[K, NestedMappingNode[K, V]]
@@ -205,3 +205,98 @@ def set_deep[K, V](d: NestedMutableMapping[K, Any], keys: Sequence[K], value: An
             sub_dict[key] = sub_dict = {}
 
     sub_dict[keys[-1]] = value
+
+
+@overload
+def map_leaves[K, V, W](
+    func: Callable[[V], W], nested_dict1: NestedMapping[K, V], /
+) -> NestedMapping[K, W]: ...
+
+
+@overload
+def map_leaves[K, V1, V2, W](
+    func: Callable[[V1, V2], W],
+    nested_dict1: NestedMapping[K, V1],
+    nested_dict2: NestedMapping[K, V2],
+    /,
+) -> NestedMapping[K, W]: ...
+
+
+@overload
+def map_leaves[K, V1, V2, V3, W](
+    func: Callable[[V1, V2, V3], W],
+    nested_dict1: NestedMapping[K, V1],
+    nested_dict2: NestedMapping[K, V2],
+    nested_dict3: NestedMapping[K, V3],
+    /,
+) -> NestedMapping[K, W]: ...
+
+
+@overload
+def map_leaves[K, V1, V2, V3, V4, W](
+    func: Callable[[V1, V2, V3, V4], W],
+    nested_dict1: NestedMapping[K, V1],
+    nested_dict2: NestedMapping[K, V2],
+    nested_dict3: NestedMapping[K, V3],
+    nested_dict4: NestedMapping[K, V4],
+    /,
+) -> NestedMapping[K, W]: ...
+
+
+@overload
+def map_leaves[K, V1, V2, V3, V4, V5, W](
+    func: Callable[[V1, V2, V3, V4, V5], W],
+    nested_dict1: NestedMapping[K, V1],
+    nested_dict2: NestedMapping[K, V2],
+    nested_dict3: NestedMapping[K, V3],
+    nested_dict4: NestedMapping[K, V4],
+    nested_dict5: NestedMapping[K, V5],
+    /,
+) -> NestedMapping[K, W]: ...
+
+
+@overload
+def map_leaves[K, W](
+    func: Callable[..., W],
+    nested_dict1: NestedMapping[K, Any],
+    nested_dict2: NestedMapping[K, Any],
+    nested_dict3: NestedMapping[K, Any],
+    nested_dict4: NestedMapping[K, Any],
+    nested_dict5: NestedMapping[K, Any],
+    /,
+    *nested_dicts: NestedMapping[K, Any],
+) -> NestedMapping[K, W]: ...
+
+
+def map_leaves[K, V, W](
+    func: Callable[..., W],
+    *nested_dicts: NestedMapping[K, V],
+) -> NestedMapping[K, W]:
+    """
+    Apply the function to every leaf (non-mapping values) of the nested dictionaries.
+
+    If multiple nested dictionaries are passed, performs element-wise operations on their corresponding values at each key.
+
+    Args:
+        func: Function to apply on the leaves.
+        *nested_dicts: Nested dictionaries on which to apply the function.
+
+    Return:
+        The result nested dictionary with mapped leaves.
+
+    >>> map_leaves(lambda x: x * 2, {"a": 1, "b": 2, "c": 3})
+    {'a': 2, 'b': 4, 'c': 6}
+
+    >>> map_leaves(lambda x, y: x + y, {"a": 1, "b": 2}, {"a": 3, "b": 4})
+    {'a': 4, 'b': 6}
+    """
+    dict_res: NestedMapping[K, W] = {}
+    dict1 = nested_dicts[0]
+    for key in dict1:
+        args = (d[key] for d in nested_dicts)
+        if isinstance(dict1[key], Mapping):
+            dict_res[key] = map_leaves(func, *cast(Iterator[NestedMapping[K, V]], args))
+        else:
+            dict_res[key] = func(*cast(Iterator[V], args))
+
+    return dict_res

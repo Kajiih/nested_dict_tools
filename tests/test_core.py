@@ -1,6 +1,7 @@
 """Tests for core module."""
 
 import math
+import operator
 import time
 
 import pytest
@@ -9,6 +10,7 @@ from nested_dict_tools import (
     KeySeparatorCollisionError,
     flatten_dict,
     get_deep,
+    map_leaves,
     set_deep,
     unflatten_dict,
 )
@@ -393,3 +395,107 @@ class TestSetDeep:
         for key in keys[:-1]:
             sub_dict = sub_dict[key]
         assert sub_dict[keys[-1]] == value
+
+
+class TestMapLeaves:
+    # Function correctly maps single-level dictionary with single input dictionary
+    def test_map_single_level_dict(self):
+        input_dict = {"a": 1, "b": 2, "c": 3}
+        expected = {"a": 2, "b": 4, "c": 6}
+        result = map_leaves(lambda x: x * 2, input_dict)
+        assert result == expected
+
+    # Empty input dictionary
+    def test_map_empty_dict(self):
+        input_dict = {}
+        expected = {}
+        result = map_leaves(lambda x: x * 2, input_dict)
+        assert result == expected
+
+    # Function correctly maps nested dictionary with multiple input dictionaries
+    def test_map_leaves_with_multiple_dicts(self):
+        # Define the input dictionaries
+        dict1 = {"a": 1, "b": {"c": 2, "d": 3}}
+        dict2 = {"a": 4, "b": {"c": 5, "d": 6}}
+
+        # Expected output after applying the function
+        expected_output = {"a": 5, "b": {"c": 7, "d": 9}}
+
+        # Call the map_leaves function and assert the result
+        result = map_leaves(operator.add, dict1, dict2)
+        assert result == expected_output
+
+    # Dictionary with mixed types (mappings and non-mappings) at same level
+    def test_map_leaves_with_mixed_types(self):
+        input_dict = {
+            "a": {"b": 1, "c": {"d": 2}},
+            "e": 3,
+            "f": {"g": 4, "h": {"i": 5}},
+        }
+        expected_output = {
+            "a": {"b": 2, "c": {"d": 4}},
+            "e": 6,
+            "f": {"g": 8, "h": {"i": 10}},
+        }
+
+        result = map_leaves(lambda x: x * 2, input_dict)
+        assert result == expected_output
+
+    # Dictionaries with different structures/missing keys
+    def test_map_leaves_with_different_structures(self):
+        dict1 = {"a": 1, "b": {"c": 2}}
+        dict2 = {"a": 3, "b": {"d": 4}}
+
+        with pytest.raises(KeyError):
+            map_leaves(operator.add, dict1, dict2)
+
+    # Deep recursion with many nested levels
+    def test_map_leaves_deep_recursion(self):
+        # Create a deeply nested dictionary
+        depth = 100
+        nested_dict = current_level = {}
+        for i in range(depth):
+            current_level[f"level_{i}"] = {}
+            current_level = current_level[f"level_{i}"]
+        current_level["value"] = 1
+
+        # Define a simple function to apply
+        def increment(x):
+            return x + 1
+
+        # Apply map_leaves with deep recursion
+        result = map_leaves(increment, nested_dict)
+
+        # Verify the result
+        current_level = result
+        for i in range(depth):
+            current_level = current_level[f"level_{i}"]
+        assert current_level["value"] == 2
+
+    # Non-commutative operations with multiple dictionaries
+    def test_non_commutative_operations(self):
+        dict1 = {"a": 1, "b": 2}
+        dict2 = {"a": 3, "b": 4}
+
+        expected_output = {"a": -2, "b": -2}
+        result = map_leaves(operator.sub, dict1, dict2)
+
+        assert result == expected_output
+
+    # Function returning different type than input values
+    def test_map_leaves_with_type_conversion(self):
+        # Define a function that changes the type of the input value
+        def to_string(x):
+            return str(x)
+
+        # Input nested dictionary with integer values
+        input_dict = {"a": 1, "b": {"c": 2, "d": 3}}
+
+        # Expected output where all integer values are converted to strings
+        expected_output = {"a": "1", "b": {"c": "2", "d": "3"}}
+
+        # Apply map_leaves with the to_string function
+        result = map_leaves(to_string, input_dict)
+
+        # Assert that the result matches the expected output
+        assert result == expected_output
