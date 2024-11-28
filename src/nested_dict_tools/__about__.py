@@ -5,7 +5,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 __app_name__ = "nested_dict_tools"
-__version__ = "0.1.3"
+__version__ = "0.2.0"
 __author__ = "Kajih"
 __author_email__ = "itskajih@gmail.com"
 __repo_url__ = "https://github.com/Kajiih/nested_dict_tools"

@@ -13,6 +13,7 @@ dictionaries. It includes:
 - Fully typed functions to:
     - Flatten and unflatten nested dictionaries.
     - Get and Set deeply nested values.
+    - Map function on leaves 
 
 flatten adapted from https://gist.github.com/crscardellino/82507c13ba2b832b860ba0960759b925
 
