@@ -1,11 +1,6 @@
 """
 Nested dictionary utilities core.
 
-This module provides a set of utilities for working with python nested
-dictionaries. It includes recursive types describing nested mappings and
-dictionaries, fully typed functions to flatten and unflatten dictionaries,
-retrieve and set deeply nested values.
-
 This module provides a set of utilities for working with Python nested
 dictionaries. It includes:
 
