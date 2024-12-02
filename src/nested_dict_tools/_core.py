@@ -21,7 +21,7 @@ This code is licensed under the terms of the MIT license.
 """
 
 from collections.abc import Callable, Iterable, Iterator, Mapping, MutableMapping, Sequence
-from typing import Any, Literal, cast, overload, reveal_type
+from typing import Any, Literal, cast, overload
 
 type NestedMapping[K, V] = Mapping[K, NestedMappingNode[K, V]]
 type NestedMappingNode[K, V] = V | NestedMapping[K, V]
@@ -72,7 +72,7 @@ def flatten_dict[K: str, V](d: NestedMapping[K, V], sep: str = ".") -> dict[str,
                 raise KeySeparatorCollisionError(k, sep)
             concat_key = parent_key + sep + k if parent_key is not None else k
             if isinstance(v, Mapping):
-                yield from flatten_dict_gen(cast(NestedMapping[K, V], v), concat_key, sep)
+                yield from flatten_dict_gen(cast("NestedMapping[K, V]", v), concat_key, sep)
             else:
                 yield concat_key, v
 
@@ -201,7 +201,7 @@ def set_deep[K, V](d: NestedMutableMapping[K, Any], keys: Sequence[K], value: An
     for key in keys[:-1]:
         try:
             # Raise TypeError if an existing key doesn't map to a dict
-            sub_dict = cast(NestedMutableMapping[K, V], sub_dict[key])
+            sub_dict = cast("NestedMutableMapping[K, V]", sub_dict[key])
         except KeyError:
             sub_dict[key] = sub_dict = {}
 
@@ -296,9 +296,9 @@ def map_leaves[K, V, W](
     for key in dict1:
         args = (d[key] for d in nested_dicts)
         if isinstance(dict1[key], Mapping):
-            dict_res[key] = map_leaves(func, *cast(Iterator[NestedMapping[K, V]], args))
+            dict_res[key] = map_leaves(func, *cast("Iterator[NestedMapping[K, V]]", args))
         else:
-            dict_res[key] = func(*cast(Iterator[V], args))
+            dict_res[key] = func(*cast("Iterator[V]", args))
 
     return dict_res
 
@@ -333,7 +333,7 @@ def filter_leaves[K, V](
     for key in nested_dict:
         sub_dict = nested_dict[key]
         if isinstance(sub_dict, Mapping):
-            filtered = filter_leaves(func, cast(NestedMapping[K, V], sub_dict), remove_empty)
+            filtered = filter_leaves(func, cast("NestedMapping[K, V]", sub_dict), remove_empty)
             if filtered or not remove_empty:
                 dict_res[key] = filtered
         else:
