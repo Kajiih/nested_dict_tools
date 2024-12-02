@@ -1,4 +1,11 @@
-"""Parse and input code snippets in a markdown file. Currently only works for python snippets."""
+"""
+Parse and input code snippets in a markdown file. Currently only works for python snippets.
+
+Write a comment "<!-- snippet: snippet_file_name -->" followed by a code python
+block to replace the code block with the content of the snippet file.
+
+This code is licensed under the terms of the MIT license.
+"""
 
 import re
 from pathlib import Path

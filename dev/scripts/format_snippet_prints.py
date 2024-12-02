@@ -1,4 +1,8 @@
-"""Format README python snippets with the results of print statements in comment."""
+"""
+Format python snippets with the results of print statements in comment.
+
+This code is licensed under the terms of the MIT license.
+"""
 
 import io
 import sys
@@ -7,7 +11,7 @@ from pathlib import Path
 # Configuration
 INPUT_DIR = Path("dev/readme_snippets/raw/")
 OUTPUT_DIR = Path("dev/readme_snippets/formatted/")
-GLOB_PATTERN = "*.py"
+SNIPPETS_GLOB_PATTERN = "*.py"
 
 
 def process_print_output(output: str) -> str:
@@ -55,7 +59,7 @@ def process_directory(input_dir: Path, output_dir: Path) -> None:
     """Iterate over all Python files in the input directory and process each."""
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    for input_file_path in input_dir.glob(GLOB_PATTERN):
+    for input_file_path in input_dir.glob(SNIPPETS_GLOB_PATTERN):
         output_file_path = output_dir / input_file_path.name
         process_file(input_file_path, output_file_path)
 
