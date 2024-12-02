@@ -89,7 +89,6 @@ jobs:
         run: |
           echo "REPORT_FILE=${REPORT_OUTPUT}" >> "$GITHUB_ENV"
           pytest --doctest-modules --md-report --md-report-flavor gfm --md-report-output "$REPORT_OUTPUT" --cov=. # -rA
-        continue-on-error: true
 
       - name: 🧪 Add test output reports to the job summary
         run: |
@@ -105,7 +104,6 @@ jobs:
         uses: codecov/codecov-action@v5
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        continue-on-error: true
 
       - name: ✅ Type checking with BasedPyright
         run: |
