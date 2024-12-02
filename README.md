@@ -14,6 +14,7 @@
   - Get and set deeply nested values.
   - Filter and map functions on leaves.
 
+<!-- snippet: features_demo -->
 ```python
 from nested_dict_tools import (
     filter_leaves,
@@ -44,15 +45,15 @@ print(unflattened == nested)  # Output: True
 
 # Filter leaves
 nested = filter_leaves(lambda k, v: isinstance(v, int), nested)
-print(nested)  # Output: {"a": {"b": {"c": 42}}}
+print(nested)  # Output: {'a': {'b': {'c': 42}}}
 
 # Map on leaves
 mapped = map_leaves(lambda x: x + 1, nested)
-print(mapped)  # Output: {"a": {"b": {"c": 43}}}
+print(mapped)  # Output: {'a': {'b': {'c': 43}}}
 
 # Map on leaves with several dictionaries
 mapped = map_leaves(lambda x, y: x + y + 1, nested, nested)
-print(mapped)  # Output: {"a": {"b": {"c": 85}}}
+print(mapped)  # Output: {'a': {'b': {'c': 85}}}
 
 
 # Recursive types:
