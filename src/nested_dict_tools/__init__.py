@@ -1,6 +1,6 @@
 """Top-level package for Nested Dict Tools."""
 
-from .core import (
+from nested_dict_tools._core import (
     KeySeparatorCollisionError,
     NestedDict,
     NestedDictNode,
@@ -8,6 +8,7 @@ from .core import (
     NestedMappingNode,
     NestedMutableMapping,
     NestedMutableMappingNode,
+    filter_leaves,
     flatten_dict,
     get_deep,
     map_leaves,
@@ -23,6 +24,7 @@ __all__ = [
     "NestedMappingNode",
     "NestedMutableMapping",
     "NestedMutableMappingNode",
+    "filter_leaves",
     "flatten_dict",
     "get_deep",
     "map_leaves",

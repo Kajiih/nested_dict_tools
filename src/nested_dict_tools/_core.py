@@ -12,8 +12,8 @@ dictionaries. It includes:
 - Recursive types for describing nested mappings and dictionaries.
 - Fully typed functions to:
     - Flatten and unflatten nested dictionaries.
-    - Get and Set deeply nested values.
-    - Map function on leaves 
+    - Get and set deeply nested values.
+    - Filter and map functions on leaves
 
 flatten adapted from https://gist.github.com/crscardellino/82507c13ba2b832b860ba0960759b925
 
@@ -21,7 +21,7 @@ This code is licensed under the terms of the MIT license.
 """
 
 from collections.abc import Callable, Iterable, Iterator, Mapping, MutableMapping, Sequence
-from typing import Any, Literal, cast, overload
+from typing import Any, Literal, cast, overload, reveal_type
 
 type NestedMapping[K, V] = Mapping[K, NestedMappingNode[K, V]]
 type NestedMappingNode[K, V] = V | NestedMapping[K, V]
@@ -61,7 +61,7 @@ def flatten_dict[K: str, V](d: NestedMapping[K, V], sep: str = ".") -> dict[str,
     >>> flatten_dict({"a.": 1})
     Traceback (most recent call last):
     ...
-    nested_dict_tools.core.KeySeparatorCollisionError: Separator `.` is a substring of key `a.`. Change separator.
+    nested_dict_tools._core.KeySeparatorCollisionError: Separator `.` is a substring of key `a.`. Change separator.
     """
 
     def flatten_dict_gen(
@@ -299,5 +299,46 @@ def map_leaves[K, V, W](
             dict_res[key] = map_leaves(func, *cast(Iterator[NestedMapping[K, V]], args))
         else:
             dict_res[key] = func(*cast(Iterator[V], args))
+
+    return dict_res
+
+
+def filter_leaves[K, V](
+    func: Callable[[K, V], bool],
+    nested_dict: NestedMapping[K, V],
+    remove_empty: bool = True,
+) -> NestedDict[K, V]:
+    """
+    Filter the leaves of a nested dictionary.
+
+    Args:
+        func: A function that takes a key and a value, and returns `True` if the
+            key-value pair should be included in the result.
+        nested_dict: The nested dictionary to filter.
+        remove_empty: A flag that determines whether empty sub-dictionaries
+            should be removed.
+
+    Returns:
+        The new nested dictionary with filtered leaves.
+
+    >>> d = {"a": {"b": 1, "c": 2}, "d": {"e": 3}}
+    >>> filter_leaves(lambda k, v: v > 1, d)
+    {'a': {'c': 2}, 'd': {'e': 3}}
+
+    >>> d = {"a": {"b": 1, "c": 2}, "d": {"e": 0}}
+    >>> filter_leaves(lambda k, v: v > 1, d, remove_empty=False)
+    {'a': {'c': 2}, 'd': {}}
+    """
+    dict_res: NestedDict[K, V] = {}
+    for key in nested_dict:
+        sub_dict = nested_dict[key]
+        if isinstance(sub_dict, Mapping):
+            filtered = filter_leaves(func, cast(NestedMapping[K, V], sub_dict), remove_empty)
+            if filtered or not remove_empty:
+                dict_res[key] = filtered
+        else:
+            val = sub_dict
+            if func(key, val):
+                dict_res[key] = val
 
     return dict_res

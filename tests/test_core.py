@@ -8,6 +8,7 @@ import pytest
 
 from nested_dict_tools import (
     KeySeparatorCollisionError,
+    filter_leaves,
     flatten_dict,
     get_deep,
     map_leaves,
@@ -498,4 +499,135 @@ class TestMapLeaves:
         result = map_leaves(to_string, input_dict)
 
         # Assert that the result matches the expected output
+        assert result == expected_output
+
+
+class TestFilterLeaves:
+    # Filter leaves based on key-value predicate function returns correct filtered dictionary
+    def test_filter_leaves_with_predicate(self):
+        # Filter leaves with values greater than 1
+        input_dict = {"a": {"b": 1, "c": 2}, "d": {"e": 3}}
+        expected_output = {"a": {"c": 2}, "d": {"e": 3}}
+        result = filter_leaves(lambda k, v: v > 1, input_dict)
+        assert result == expected_output
+
+    # Empty sub-dictionaries are removed when remove_empty=True
+    def test_remove_empty_sub_dicts(self):
+        nested_dict = {"a": {"b": 1, "c": 2}, "d": {"e": 0}}
+        result = filter_leaves(lambda k, v: v > 1, nested_dict)
+        expected = {"a": {"c": 2}}
+        assert result == expected
+
+    # Empty sub-dictionaries are preserved when remove_empty=False
+    def test_preserve_empty_sub_dicts_when_remove_empty_false(self):
+        input_dict = {"a": {"b": 1, "c": 2}, "d": {"e": 0}}
+        expected_output = {"a": {"c": 2}, "d": {}}
+        result = filter_leaves(lambda k, v: v > 1, input_dict, remove_empty=False)
+        assert result == expected_output
+
+    # Empty input dictionary returns empty dictionary
+    def test_filter_leaves_empty_input(self):
+        # Define an empty input dictionary
+        input_dict = {}
+
+        # Define a simple filter function that returns True for any input
+        filter_func = lambda k, v: True
+
+        # Call the filter_leaves function with the empty dictionary
+        result = filter_leaves(filter_func, input_dict)
+
+        # Assert that the result is an empty dictionary
+        assert result == {}
+
+    # Deeply nested dictionary with single matching leaf preserves path to leaf
+    def test_single_matching_leaf_preserves_path(self):
+        # Define a deeply nested dictionary
+        nested_dict = {"level1": {"level2": {"level3": {"level4": {"target": 42, "other": 0}}}}}
+
+        # Define a filter function that matches only the target leaf
+        def filter_func(key, value):
+            return value == 42
+
+        # Apply the filter_leaves function
+        result = filter_leaves(filter_func, nested_dict)
+
+        # Expected result should preserve the path to the matching leaf
+        expected_result = {"level1": {"level2": {"level3": {"level4": {"target": 42}}}}}
+
+        assert result == expected_result
+
+    # Handle non-string dictionary keys
+    def test_filter_leaves_with_non_string_keys(self):
+        # Create a nested dictionary with non-string keys
+        nested_dict = {1: {2: 10, 3: 20}, 4: {5: 30, 6: 40}, (7, 8): {(9, 10): 50}}
+
+        # Define a filter function that filters out values less than 30
+        filter_func = lambda k, v: v >= 30
+
+        # Expected result after filtering
+        expected_output = {4: {5: 30, 6: 40}, (7, 8): {(9, 10): 50}}
+
+        # Call the filter_leaves function
+        result = filter_leaves(filter_func, nested_dict)
+
+        # Assert the result matches the expected output
+        assert result == expected_output
+
+    # Handle large dictionaries with many nested levels
+    def test_filter_large_nested_dict(self):
+        # Create a large nested dictionary
+        NB_RECURSION = 100
+        large_nested_dict = {}
+        current_level = large_nested_dict
+        for i in range(NB_RECURSION):
+            current_level[f"key{i}"] = {}
+            current_level = current_level[f"key{i}"]
+        current_level["final_key"] = 42
+
+        # Define a filter function that filters out all values except 42
+        def filter_func(k, v):
+            return v == 42
+
+        # Apply the filter_leaves function
+        filtered_dict = filter_leaves(filter_func, large_nested_dict)
+
+        # Check if the filtered dictionary has the expected structure
+        expected_dict = {}
+        current_level = expected_dict
+        for i in range(NB_RECURSION):
+            current_level[f"key{i}"] = {}
+            current_level = current_level[f"key{i}"]
+        current_level["final_key"] = 42
+
+        assert filtered_dict == expected_dict
+
+    # Handle dictionaries with mixed depth levels
+    def test_filter_leaves_with_mixed_depth(self):
+        # Test input with mixed depth levels
+        input_dict = {"a": {"b": 1, "c": {"d": 2, "e": 3}}, "f": {"g": {"h": 4}, "i": 5}, "j": 6}
+        # Define a filter function
+        filter_func = lambda k, v: v > 2
+
+        # Expected output after filtering
+        expected_output = {"a": {"c": {"e": 3}}, "f": {"g": {"h": 4}, "i": 5}, "j": 6}
+
+        # Call the function under test
+        result = filter_leaves(filter_func, input_dict)
+
+        # Assert the result matches the expected output
+        assert result == expected_output
+
+    def test_filter_leaves_key_value_mixed_depth(self):
+        # Test input with mixed depth levels
+        input_dict = {"a": {"b": 1, "c": {"d": 2, "e": 3}}, "f": {"g": {"h": 4}, "i": 5}, "j": 6}
+        # Define a filter function that considers both key and value
+        filter_func = lambda k, v: k in {"e", "i", "j"} and v > 2
+
+        # Expected output after filtering
+        expected_output = {"a": {"c": {"e": 3}}, "f": {"i": 5}, "j": 6}
+
+        # Call the function under test
+        result = filter_leaves(filter_func, input_dict)
+
+        # Assert the result matches the expected output
         assert result == expected_output
