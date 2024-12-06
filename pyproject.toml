@@ -35,6 +35,7 @@ dev = [
     "pytest>=8.3.3",
     "pytest-cov>=6",
     "pytest-md-report>=0.6.2",
+    "typer>=0.15.1",
 ]
 lint = ["ruff"]
 type-check = ["basedpyright"]
@@ -224,6 +225,6 @@ docstring-code-format = true
 
 [tool.poetry]
 name = "Test"
-version = "0.0.1" # Looks like to be necessary
+version = "0.0.1"                                           # Looks like to be necessary
 description = ""
 authors = ["Katerina Vankova <katerinavankova1@gmail.com>"]
