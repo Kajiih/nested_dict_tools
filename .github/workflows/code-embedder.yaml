@@ -42,7 +42,7 @@ jobs:
           uv sync --all-extras --dev
           uv pip install .
           # uv pip install typer # For code embedder
-          pin install typer
+          pip install typer
 
       - name: 🏞️ Activate virtual environment
         run: |
