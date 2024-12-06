@@ -14,8 +14,7 @@
   - Get and set deeply nested values.
   - Filter and map functions on leaves.
 
-<!-- snippet: features_demo -->
-```python
+```python:dev/readme_snippets/formatted/features_demo.py
 from nested_dict_tools import (
     filter_leaves,
     flatten_dict,
