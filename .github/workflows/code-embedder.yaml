@@ -37,6 +37,9 @@ jobs:
         run: |
           pip install .
 
+      - name: 🪄 Format raw code snippets with ruff
+        run: ruff format dev/readme_snippets/
+
       - name: 🪄 Format print comments in code snippets
         run: python dev/scripts/format_snippet_prints.py
 
