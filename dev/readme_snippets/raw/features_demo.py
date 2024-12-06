@@ -38,7 +38,6 @@ mapped = map_leaves(lambda x, y: x + y + 1, nested, nested)
 print(mapped)
 
 
-
 # Recursive types:
 type NestedDict[K, V] = dict[K, NestedDictNode[K, V]]
 type NestedDictNode[K, V] = V | NestedDict[K, V]
