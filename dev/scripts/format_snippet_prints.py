@@ -14,6 +14,15 @@ OUTPUT_DIR = Path("dev/readme_snippets/formatted/")
 SNIPPETS_GLOB_PATTERN = "*.py"
 
 
+class PrintCaptureError(RuntimeError):
+    """Error that happened while capturing print output."""
+
+    def __init__(self, e: Exception) -> None:
+        super().__init__(
+            f"An error occurred when executing code while capturing print outputs: {e}"
+        )
+
+
 def process_print_output(output: str) -> str:
     """Format the print output."""
     return f"  # Output: {output}" if output else ""
@@ -27,7 +36,7 @@ def execute_and_capture_prints(code: str) -> list[str]:
     try:
         exec(code)
     except Exception as e:
-        captured_output.write(f"Error: {e}")
+        raise PrintCaptureError(e) from e
 
     sys.stdout = sys.__stdout__
     print(f"{captured_output.getvalue().strip().splitlines()}")
