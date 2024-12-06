@@ -223,7 +223,7 @@ docstring-code-format = true
     ]
 
 [tool.poetry]
-name = "Test"
-version = "0.0.1"                                           # Looks like to be necessary
+name = ""
+version = "0.0.1" # Looks like to be necessary
 description = ""
-authors = ["Katerina Vankova <katerinavankova1@gmail.com>"]
+authors = [" <>"]
