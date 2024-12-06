@@ -221,3 +221,9 @@ docstring-code-format = true
         # Don't complain about abstract methods, they aren't run:
         "@(abc\\.)?abstractmethod",
     ]
+
+[tool.poetry]
+name = "Test"
+version = ""
+description = ""
+authors = ["Katerina Vankova <katerinavankova1@gmail.com>"]
