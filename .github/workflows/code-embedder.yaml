@@ -42,10 +42,10 @@ jobs:
           uv sync --all-extras --dev
           uv pip install .
 
-      - name: 🏞️ Activate virtual environment
-        run: |
-          source .venv/bin/activate
-          echo PATH=$PATH >> $GITHUB_ENV
+      # - name: 🏞️ Activate virtual environment
+      #   run: |
+      #     source .venv/bin/activate
+      #     echo PATH=$PATH >> $GITHUB_ENV
 
       - name: 🪄 Format comments in code snippets
         run: python dev/scripts/format_snippet_prints.py
