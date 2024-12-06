@@ -39,8 +39,8 @@ jobs:
 
       - name: 📥 Install the project
         run: |
-          uv sync --all-extras --dev
           uv python install ${{ env.PYTHON_VERSION }}
+          uv sync --all-extras --dev
           uv pip install .
 
       # - name: 🏞️ Activate virtual environment
