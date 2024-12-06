@@ -61,6 +61,9 @@ def process_file(input_file_path: Path, output_file_path: Path) -> None:
             formatted_lines[-1] = f"{line.strip()}{formatted_output}\n"  # Add comment with output
             print_index += 1
 
+    # Remove trailing newlines
+    formatted_lines[-1] = formatted_lines[-1].rstrip("\n")
+
     with output_file_path.open("w") as f:
         f.writelines(formatted_lines)
 
