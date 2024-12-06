@@ -15,6 +15,9 @@ jobs:
         # with:
         #   ref: ${{ github.event.pull_request.head.ref }}
 
+      - name: 🪄 Format comments in code snippets
+        run: python dev/scripts/format_snippet_prints.py
+
       - name: Run code embedder
         uses: kvankova/code-embedder@v1.1.0
         env:
