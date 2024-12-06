@@ -39,7 +39,7 @@ def execute_and_capture_prints(code: str) -> list[str]:
         raise PrintCaptureError(e) from e
 
     sys.stdout = sys.__stdout__
-    print(f"{captured_output.getvalue().strip().splitlines()}")
+
     return captured_output.getvalue().strip().splitlines()
 
 
@@ -49,8 +49,6 @@ def process_file(input_file_path: Path, output_file_path: Path) -> None:
         lines = f.readlines()
 
     print_outputs = execute_and_capture_prints("".join(lines))
-    print("\nPrint outputs:")
-    print(print_outputs)
 
     formatted_lines = []
     print_index = 0
