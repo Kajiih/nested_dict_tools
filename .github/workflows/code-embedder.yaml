@@ -1,4 +1,4 @@
-name: Code Embedder
+name: 🪄 Code Embedder
 
 on: [push, pull_request]
 
