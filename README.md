@@ -59,6 +59,8 @@ print(mapped)  # Output: {'a': {'b': {'c': 85}}}
 type NestedDict[K, V] = dict[K, NestedDictNode[K, V]]
 type NestedDictNode[K, V] = V | NestedDict[K, V]
 # Similar types for Mapping and MutableMapping
+
+print("This is a new lines!")  # hihi  # Output: This is a new lines!
 ```
 
 ## ⬇️ Installation
