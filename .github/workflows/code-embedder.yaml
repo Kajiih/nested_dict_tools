@@ -25,10 +25,10 @@ jobs:
           enable-cache: true
           version: "0.5.4"
 
-      # - name: 🐍 Set up Python ${{ env.PYTHON_VERSION }}
-      #   uses: actions/setup-python@v5
-      #   with:
-      #     python-version: ${{ env.PYTHON_VERSION }}
+      - name: 🐍 Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: 💾 Setup pip cache
         uses: actions/cache@v4
@@ -39,9 +39,9 @@ jobs:
 
       - name: 📥 Install the project
         run: |
-          uv python install ${{ env.PYTHON_VERSION }}
-          uv sync --all-extras --dev
-          uv pip install .
+          # uv sync --all-extras --dev
+          # uv pip install .
+          pip install .
 
       # - name: 🏞️ Activate virtual environment
       #   run: |
@@ -51,34 +51,34 @@ jobs:
       - name: 🪄 Format comments in code snippets
         run: python dev/scripts/format_snippet_prints.py
 
-      - name: 🏞️ Deactivate virtual environment
-        run: |
-          unset -f pydoc > /dev/null 2>&1 || true
-           if ! [ -z "${_OLD_VIRTUAL_PATH:+_}" ]
-           then
-                   PATH="$_OLD_VIRTUAL_PATH"
-                   export PATH
-                   unset _OLD_VIRTUAL_PATH
-           fi
-           if ! [ -z "${_OLD_VIRTUAL_PYTHONHOME+_}" ]
-           then
-                   PYTHONHOME="$_OLD_VIRTUAL_PYTHONHOME"
-                   export PYTHONHOME
-                   unset _OLD_VIRTUAL_PYTHONHOME
-           fi
-           hash -r 2> /dev/null
-           if ! [ -z "${_OLD_VIRTUAL_PS1+_}" ]
-           then
-                   PS1="$_OLD_VIRTUAL_PS1"
-                   export PS1
-                   unset _OLD_VIRTUAL_PS1
-           fi
-           unset VIRTUAL_ENV
-           unset VIRTUAL_ENV_PROMPT
-           if [ ! "${1-}" = "nondestructive" ]
-           then
-                   unset -f deactivate
-           fi
+      # - name: 🏞️ Deactivate virtual environment
+      #   run: |
+      #     unset -f pydoc > /dev/null 2>&1 || true
+      #      if ! [ -z "${_OLD_VIRTUAL_PATH:+_}" ]
+      #      then
+      #              PATH="$_OLD_VIRTUAL_PATH"
+      #              export PATH
+      #              unset _OLD_VIRTUAL_PATH
+      #      fi
+      #      if ! [ -z "${_OLD_VIRTUAL_PYTHONHOME+_}" ]
+      #      then
+      #              PYTHONHOME="$_OLD_VIRTUAL_PYTHONHOME"
+      #              export PYTHONHOME
+      #              unset _OLD_VIRTUAL_PYTHONHOME
+      #      fi
+      #      hash -r 2> /dev/null
+      #      if ! [ -z "${_OLD_VIRTUAL_PS1+_}" ]
+      #      then
+      #              PS1="$_OLD_VIRTUAL_PS1"
+      #              export PS1
+      #              unset _OLD_VIRTUAL_PS1
+      #      fi
+      #      unset VIRTUAL_ENV
+      #      unset VIRTUAL_ENV_PROMPT
+      #      if [ ! "${1-}" = "nondestructive" ]
+      #      then
+      #              unset -f deactivate
+      #      fi
 
       - name: 📝 Run code embedder
         uses: kvankova/code-embedder@v1.1.0

@@ -12,7 +12,7 @@ jobs:
     env:
       PYTHON_VERSION: "3.12"
     steps:
-      - name: Checkout
+      - name: 🛎️ Checkout
         uses: actions/checkout@v4
         # with:
         #   ref: ${{ github.event.pull_request.head.ref }}
@@ -21,6 +21,16 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: 💾 Setup pip cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('uv.lock') }}
+
+      - name: 📥 Install the project
+        run: |
+          pip install .
 
       - name: 🪄 Format comments in code snippets
         run: python dev/scripts/format_snippet_prints.py
