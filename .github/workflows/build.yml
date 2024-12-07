@@ -37,15 +37,15 @@ jobs:
         shell: bash
     env:
       UV_SYSTEM_PYTHON: 1
+      
     steps:
       - name: 🛎️ Checkout
         uses: actions/checkout@v4
 
       - name: 🐍 Install uv with caching
-        uses: astral-sh/setup-uv@v3
+        uses: astral-sh/setup-uv@v4
         with:
           enable-cache: true
-          version: "0.5.4"
 
       - name: 🐍 Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
