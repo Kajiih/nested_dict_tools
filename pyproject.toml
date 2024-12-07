@@ -221,9 +221,3 @@ docstring-code-format = true
         # Don't complain about abstract methods, they aren't run:
         "@(abc\\.)?abstractmethod",
     ]
-
-[tool.poetry]
-name = ""
-version = "0.0.1" # Looks like to be necessary
-description = ""
-authors = [" <>"]
