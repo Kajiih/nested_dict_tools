@@ -21,6 +21,9 @@ from nested_dict_tools import (
     filter_leaves,
     flatten_dict,
     get_deep,
+    is_in_leaves,
+    iter_leaf_containers,
+    iter_leaves,
     map_leaves,
     set_deep,
     unflatten_dict,
@@ -44,20 +47,41 @@ print(flat)  # Output: {'a.b.c': 42, 'a.z': 'new_value'}
 unflattened = unflatten_dict(flat, sep=".")
 print(unflattened == nested)  # Output: True
 
+
+# Iterate over leaves
+leaves = list(iter_leaves(nested))
+print(leaves)  # Output: [42, 'new_value']
+
+# Iterate over leaf conainers and keys
+leaf_refs = list(iter_leaf_containers(nested))
+print(leaf_refs)  # Output: [({'c': 42}, 'c'), ({'b': {'c': 42}, 'z': 'new_value'}, 'z')]
+
+# and mutate leaves in place
+d, key = leaf_refs[0]
+d[key] = 3
+print(nested)  # Output: {'a': {'b': {'c': 3}, 'z': 'new_value'}}
+
+
+# Check if a values is the leaves
+print(is_in_leaves("foo", nested))  # Output: False
+
 # Filter leaves
-nested = filter_leaves(lambda k, v: isinstance(v, int), nested)
-print(nested)  # Output: {'a': {'b': {'c': 42}}}
+nested = filter_leaves(
+    nested,
+    lambda k, v: isinstance(v, int),
+)
+print(nested)  # Output: {'a': {'b': {'c': 3}}}
 
 # Map on leaves
 mapped = map_leaves(lambda x: x + 1, nested)
-print(mapped)  # Output: {'a': {'b': {'c': 43}}}
+print(mapped)  # Output: {'a': {'b': {'c': 4}}}
 
 # Map on leaves with several dictionaries
 mapped = map_leaves(lambda x, y: x + y + 1, nested, nested)
-print(mapped)  # Output: {'a': {'b': {'c': 85}}}
+print(mapped)  # Output: {'a': {'b': {'c': 7}}}
 
 
-# Recursive types:
+# # Recursive types:
 type NestedDict[K, V] = dict[K, NestedDictNode[K, V]]
 type NestedDictNode[K, V] = V | NestedDict[K, V]
 # Similar types for Mapping and MutableMapping
