@@ -508,13 +508,13 @@ class TestFilterLeaves:
         # Filter leaves with values greater than 1
         input_dict = {"a": {"b": 1, "c": 2}, "d": {"e": 3}}
         expected_output = {"a": {"c": 2}, "d": {"e": 3}}
-        result = filter_leaves(lambda k, v: v > 1, input_dict)
+        result = filter_leaves(func=lambda k, v: v > 1, nested_dict=input_dict)
         assert result == expected_output
 
     # Empty sub-dictionaries are removed when remove_empty=True
     def test_remove_empty_sub_dicts(self):
         nested_dict = {"a": {"b": 1, "c": 2}, "d": {"e": 0}}
-        result = filter_leaves(lambda k, v: v > 1, nested_dict)
+        result = filter_leaves(func=lambda k, v: v > 1, nested_dict=nested_dict)
         expected = {"a": {"c": 2}}
         assert result == expected
 
@@ -522,7 +522,7 @@ class TestFilterLeaves:
     def test_preserve_empty_sub_dicts_when_remove_empty_false(self):
         input_dict = {"a": {"b": 1, "c": 2}, "d": {"e": 0}}
         expected_output = {"a": {"c": 2}, "d": {}}
-        result = filter_leaves(lambda k, v: v > 1, input_dict, remove_empty=False)
+        result = filter_leaves(func=lambda k, v: v > 1, nested_dict=input_dict, remove_empty=False)
         assert result == expected_output
 
     # Empty input dictionary returns empty dictionary
@@ -534,7 +534,7 @@ class TestFilterLeaves:
         filter_func = lambda k, v: True
 
         # Call the filter_leaves function with the empty dictionary
-        result = filter_leaves(filter_func, input_dict)
+        result = filter_leaves(func=filter_func, nested_dict=input_dict)
 
         # Assert that the result is an empty dictionary
         assert result == {}
@@ -549,7 +549,7 @@ class TestFilterLeaves:
             return value == 42
 
         # Apply the filter_leaves function
-        result = filter_leaves(filter_func, nested_dict)
+        result = filter_leaves(func=filter_func, nested_dict=nested_dict)
 
         # Expected result should preserve the path to the matching leaf
         expected_result = {"level1": {"level2": {"level3": {"level4": {"target": 42}}}}}
@@ -568,7 +568,7 @@ class TestFilterLeaves:
         expected_output = {4: {5: 30, 6: 40}, (7, 8): {(9, 10): 50}}
 
         # Call the filter_leaves function
-        result = filter_leaves(filter_func, nested_dict)
+        result = filter_leaves(func=filter_func, nested_dict=nested_dict)
 
         # Assert the result matches the expected output
         assert result == expected_output
@@ -589,7 +589,7 @@ class TestFilterLeaves:
             return v == 42
 
         # Apply the filter_leaves function
-        filtered_dict = filter_leaves(filter_func, large_nested_dict)
+        filtered_dict = filter_leaves(func=filter_func, nested_dict=large_nested_dict)
 
         # Check if the filtered dictionary has the expected structure
         expected_dict = {}
@@ -612,7 +612,7 @@ class TestFilterLeaves:
         expected_output = {"a": {"c": {"e": 3}}, "f": {"g": {"h": 4}, "i": 5}, "j": 6}
 
         # Call the function under test
-        result = filter_leaves(filter_func, input_dict)
+        result = filter_leaves(func=filter_func, nested_dict=input_dict)
 
         # Assert the result matches the expected output
         assert result == expected_output
@@ -627,7 +627,12 @@ class TestFilterLeaves:
         expected_output = {"a": {"c": {"e": 3}}, "f": {"i": 5}, "j": 6}
 
         # Call the function under test
-        result = filter_leaves(filter_func, input_dict)
+        result = filter_leaves(func=filter_func, nested_dict=input_dict)
 
         # Assert the result matches the expected output
         assert result == expected_output
+
+
+# TODO: Add tests for iter_leaves
+# TODO: Add tests for iter_leaf_containers
+# TODO: Add tests for is_in_leaves

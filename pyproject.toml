@@ -143,9 +143,11 @@ exclude = []
         "RET504", # Unnecessary assignment to `...` before `return` statement
         "G004",   # Logging statement uses f-string
 
+        # Uncomment for prod
         "ERA001", # Found commented-out code
         "S101",   # Use of `assert` detected
         "G004",   # Logging statement uses f-string
+        "TC006",  # Quotes around typing.cast
     ]
 
         [tool.ruff.lint.per-file-ignores]

@@ -12,7 +12,9 @@
 - Fully typed functions to:
   - Flatten and unflatten nested dictionaries.
   - Get and set deeply nested values.
+  - Iterate over leaves and the dictionary that contains then.
   - Filter and map functions on leaves.
+  - Other helpful functions.
 
 ```python:dev/readme_snippets/formatted/features_demo.py
 from nested_dict_tools import (
