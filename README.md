@@ -52,7 +52,7 @@ print(unflattened == nested)  # Output: True
 leaves = list(iter_leaves(nested))
 print(leaves)  # Output: [42, 'new_value']
 
-# Iterate over leaf containers and keys
+# Iterate over leaf conainers and keys
 leaf_refs = list(iter_leaf_containers(nested))
 print(leaf_refs)  # Output: [({'c': 42}, 'c'), ({'b': {'c': 42}, 'z': 'new_value'}, 'z')]
 
